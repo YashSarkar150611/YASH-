@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YASH - Watch Customizer</title>
+    <title>YASH - 3D Watch Customizer</title>
     <style>
         * {
             margin: 0;
@@ -55,137 +55,24 @@
             }
         }
 
-        /* Watch Display */
-        .watch-display {
+        /* Canvas */
+        .canvas-container {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 400px;
-            perspective: 1000px;
+            background: #f5f5f5;
+            border-radius: 15px;
         }
 
-        .watch-container {
-            position: relative;
-            width: 280px;
-            height: 320px;
+        canvas {
+            max-width: 100%;
+            border-radius: 10px;
+            cursor: grab;
         }
 
-        /* Left Strap */
-        .strap-left {
-            position: absolute;
-            width: 50px;
-            height: 200px;
-            border-radius: 25px;
-            left: -60px;
-            top: 60px;
-            box-shadow: -5px 5px 15px rgba(0, 0, 0, 0.2);
-            z-index: 1;
-        }
-
-        /* Right Strap */
-        .strap-right {
-            position: absolute;
-            width: 50px;
-            height: 200px;
-            border-radius: 25px;
-            right: -60px;
-            top: 60px;
-            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
-            z-index: 1;
-        }
-
-        /* Watch Case */
-        .watch-case {
-            position: absolute;
-            width: 220px;
-            height: 220px;
-            border-radius: 50%;
-            top: 50px;
-            left: 30px;
-            box-shadow: 
-                inset -5px -5px 15px rgba(0, 0, 0, 0.3),
-                0 10px 30px rgba(0, 0, 0, 0.2);
-            z-index: 2;
-            border: 8px solid;
-        }
-
-        /* Watch Dial */
-        .watch-dial {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            top: 10px;
-            left: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2);
-            z-index: 3;
-        }
-
-        /* Hour Markers */
-        .markers {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-        }
-
-        .marker {
-            position: absolute;
-            width: 3px;
-            height: 12px;
-            background: white;
-            left: 50%;
-            top: 10px;
-            margin-left: -1.5px;
-            transform-origin: 50% 90px;
-        }
-
-        /* Watch Hands */
-        .watch-hand {
-            position: absolute;
-            background: white;
-            transform-origin: bottom center;
-            left: 50%;
-            bottom: 50%;
-        }
-
-        .hour-hand {
-            width: 4px;
-            height: 50px;
-            margin-left: -2px;
-            background: white;
-            box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
-        }
-
-        .minute-hand {
-            width: 3px;
-            height: 70px;
-            margin-left: -1.5px;
-            background: white;
-            box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
-        }
-
-        .second-hand {
-            width: 2px;
-            height: 80px;
-            margin-left: -1px;
-            background: #ff6b6b;
-        }
-
-        .center-dot {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: white;
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 10;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        canvas:active {
+            cursor: grabbing;
         }
 
         /* Controls */
@@ -216,7 +103,7 @@
 
         .color-btn {
             width: 100%;
-            padding: 15px;
+            padding: 12px;
             border: 3px solid transparent;
             border-radius: 10px;
             cursor: pointer;
@@ -224,7 +111,7 @@
             font-weight: bold;
             color: white;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-            font-size: 0.85em;
+            font-size: 0.8em;
         }
 
         .color-btn:hover {
@@ -292,7 +179,6 @@
             background: #777;
         }
 
-        /* Info Box */
         .info-box {
             background: #e3f2fd;
             border-left: 4px solid #2196F3;
@@ -320,34 +206,12 @@
 </head>
 <body>
     <div class="container">
-        <h1>🕐 YASH Watch Customizer</h1>
+        <h1>🕐 YASH 3D Watch Customizer</h1>
 
         <div class="content">
-            <!-- Watch Display -->
-            <div class="watch-display">
-                <div class="watch-container">
-                    <!-- Left Strap -->
-                    <div class="strap-left" id="strapLeft"></div>
-                    
-                    <!-- Right Strap -->
-                    <div class="strap-right" id="strapRight"></div>
-
-                    <!-- Watch Case -->
-                    <div class="watch-case" id="watchCase">
-                        <!-- Watch Dial -->
-                        <div class="watch-dial" id="watchDial">
-                            <div class="markers" id="markers"></div>
-                            
-                            <!-- Clock Hands -->
-                            <div class="watch-hand hour-hand" id="hourHand"></div>
-                            <div class="watch-hand minute-hand" id="minuteHand"></div>
-                            <div class="watch-hand second-hand" id="secondHand"></div>
-                            
-                            <!-- Center Dot -->
-                            <div class="center-dot"></div>
-                        </div>
-                    </div>
-                </div>
+            <!-- 3D Canvas -->
+            <div class="canvas-container">
+                <canvas id="watchCanvas" width="350" height="400"></canvas>
             </div>
 
             <!-- Controls -->
@@ -391,7 +255,7 @@
 
                 <!-- Info -->
                 <div class="info-box">
-                    ℹ️ Click colors to customize your watch. Straps appear on both sides!
+                    ℹ️ 3D watch with rotating straps. Drag to rotate!
                 </div>
             </div>
         </div>
@@ -404,6 +268,12 @@
             frameColor: '#c0c0c0',
             strapColor: '#1a1a1a'
         };
+
+        let rotationX = 0.3;
+        let rotationY = 0.2;
+        let isDragging = false;
+        let lastX = 0;
+        let lastY = 0;
 
         // Color Palettes
         const colors = {
@@ -441,23 +311,179 @@
             neon: { dialColor: '#00ff00', frameColor: '#00ffff', strapColor: '#ff00ff' }
         };
 
+        // 3D Vector
+        class Vector3 {
+            constructor(x = 0, y = 0, z = 0) {
+                this.x = x;
+                this.y = y;
+                this.z = z;
+            }
+
+            rotateX(angle) {
+                const cos = Math.cos(angle);
+                const sin = Math.sin(angle);
+                const y = this.y * cos - this.z * sin;
+                const z = this.y * sin + this.z * cos;
+                return new Vector3(this.x, y, z);
+            }
+
+            rotateY(angle) {
+                const cos = Math.cos(angle);
+                const sin = Math.sin(angle);
+                const x = this.x * cos + this.z * sin;
+                const z = -this.x * sin + this.z * cos;
+                return new Vector3(x, this.y, z);
+            }
+
+            project(distance = 5) {
+                const scale = distance / (distance + this.z);
+                return {
+                    x: this.x * scale,
+                    y: this.y * scale,
+                    z: this.z,
+                    scale: scale
+                };
+            }
+        }
+
+        // Draw 3D Watch
+        function draw3DWatch() {
+            const canvas = document.getElementById('watchCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            ctx.fillStyle = '#f5f5f5';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.save();
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+
+            // Draw straps (left and right)
+            drawStrap(ctx, -60, -80, 30, 160, rotationX, rotationY);
+            drawStrap(ctx, 30, -80, 30, 160, rotationX, rotationY);
+
+            // Draw watch case
+            drawWatch(ctx, rotationX, rotationY);
+
+            ctx.restore();
+        }
+
+        // Draw Individual Strap
+        function drawStrap(ctx, x, y, width, height, rotX, rotY) {
+            const corners = [
+                new Vector3(x, y, 10),
+                new Vector3(x + width, y, 10),
+                new Vector3(x + width, y + height, 10),
+                new Vector3(x, y + height, 10),
+                new Vector3(x, y, -5),
+                new Vector3(x + width, y, -5),
+                new Vector3(x + width, y + height, -5),
+                new Vector3(x, y + height, -5)
+            ];
+
+            // Rotate
+            const rotated = corners.map(v => v.rotateX(rotX).rotateY(rotY));
+            const projected = rotated.map(v => v.project());
+
+            // Sort by z-depth
+            const faces = [
+                { points: [0, 1, 2, 3], color: watchState.strapColor },
+                { points: [4, 5, 6, 7], color: '#999999' }
+            ];
+
+            faces.sort((a, b) => {
+                const avgA = a.points.reduce((sum, i) => sum + projected[i].z, 0) / a.points.length;
+                const avgB = b.points.reduce((sum, i) => sum + projected[i].z, 0) / b.points.length;
+                return avgA - avgB;
+            });
+
+            faces.forEach(face => {
+                ctx.fillStyle = face.color;
+                ctx.beginPath();
+                face.points.forEach((i, idx) => {
+                    const proj = projected[i];
+                    if (idx === 0) ctx.moveTo(proj.x, proj.y);
+                    else ctx.lineTo(proj.x, proj.y);
+                });
+                ctx.closePath();
+                ctx.fill();
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 0.5;
+                ctx.stroke();
+            });
+        }
+
+        // Draw 3D Watch
+        function drawWatch(ctx, rotX, rotY) {
+            // Create watch case cylinder
+            const mainCircle = [];
+            for (let i = 0; i < 20; i++) {
+                const angle = (i / 20) * Math.PI * 2;
+                const x = Math.cos(angle) * 80;
+                const z = Math.sin(angle) * 80;
+                mainCircle.push(new Vector3(x, -40, z));
+            }
+
+            // Rotate and project
+            const rotated = mainCircle.map(v => v.rotateX(rotX).rotateY(rotY));
+            const projected = rotated.map(v => v.project());
+
+            // Draw watch case
+            ctx.fillStyle = watchState.frameColor;
+            ctx.beginPath();
+            projected.forEach((p, i) => {
+                if (i === 0) ctx.moveTo(p.x, p.y);
+                else ctx.lineTo(p.x, p.y);
+            });
+            ctx.closePath();
+            ctx.fill();
+            ctx.strokeStyle = '#555';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Draw dial (top face)
+            ctx.fillStyle = watchState.dialColor;
+            ctx.beginPath();
+            projected.forEach((p, i) => {
+                if (i === 0) ctx.moveTo(p.x, p.y);
+                else ctx.lineTo(p.x, p.y);
+            });
+            ctx.closePath();
+            ctx.fill();
+
+            // Draw time on dial
+            const textColor = isLight(watchState.dialColor) ? '#000000' : '#ffffff';
+            ctx.fillStyle = textColor;
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString().substring(0, 5);
+            ctx.fillText(timeStr, 0, 10);
+
+            // Draw hour markers
+            for (let i = 0; i < 12; i++) {
+                const angle = (i / 12) * Math.PI * 2;
+                const x = Math.cos(angle) * 65;
+                const y = -30 + Math.sin(angle) * 10;
+                ctx.fillStyle = '#fff';
+                ctx.fillRect(x - 1, y - 4, 2, 8);
+            }
+        }
+
         // Initialize Color Pickers
         function initializeColorPickers() {
-            // Dial
             const dialContainer = document.getElementById('dialColors');
             colors.dial.forEach(color => {
                 const btn = createColorButton(color, 'dial');
                 dialContainer.appendChild(btn);
             });
 
-            // Frame
             const frameContainer = document.getElementById('frameColors');
             colors.frame.forEach(color => {
                 const btn = createColorButton(color, 'frame');
                 frameContainer.appendChild(btn);
             });
 
-            // Strap
             const strapContainer = document.getElementById('strapColors');
             colors.strap.forEach(color => {
                 const btn = createColorButton(color, 'strap');
@@ -478,45 +504,7 @@
         // Select Color
         function selectColor(hex, type) {
             watchState[type + 'Color'] = hex;
-            updateWatch();
             updateActiveButtons();
-        }
-
-        // Update Watch Display
-        function updateWatch() {
-            const watchDial = document.getElementById('watchDial');
-            const watchCase = document.getElementById('watchCase');
-            const strapLeft = document.getElementById('strapLeft');
-            const strapRight = document.getElementById('strapRight');
-
-            watchDial.style.backgroundColor = watchState.dialColor;
-            watchCase.style.borderColor = watchState.frameColor;
-            strapLeft.style.backgroundColor = watchState.strapColor;
-            strapRight.style.backgroundColor = watchState.strapColor;
-
-            // Update hand colors based on dial color
-            const isLightDial = isLight(watchState.dialColor);
-            document.getElementById('hourHand').style.backgroundColor = isLightDial ? '#000000' : '#ffffff';
-            document.getElementById('minuteHand').style.backgroundColor = isLightDial ? '#000000' : '#ffffff';
-        }
-
-        // Check if color is light
-        function isLight(hex) {
-            const r = parseInt(hex.substr(1, 2), 16);
-            const g = parseInt(hex.substr(3, 2), 16);
-            const b = parseInt(hex.substr(5, 2), 16);
-            return (r * 299 + g * 587 + b * 114) / 1000 > 128;
-        }
-
-        // Create Hour Markers
-        function createMarkers() {
-            const markersContainer = document.getElementById('markers');
-            for (let i = 0; i < 12; i++) {
-                const marker = document.createElement('div');
-                marker.className = 'marker';
-                marker.style.transform = `rotate(${i * 30}deg)`;
-                markersContainer.appendChild(marker);
-            }
         }
 
         // Update Active Buttons
@@ -531,85 +519,28 @@
             });
         }
 
-        // Update Clock Hands
-        function updateClockHands() {
-            const now = new Date();
-            const hours = now.getHours() % 12;
-            const minutes = now.getMinutes();
-            const seconds = now.getSeconds();
-
-            const hourHand = document.getElementById('hourHand');
-            const minuteHand = document.getElementById('minuteHand');
-            const secondHand = document.getElementById('secondHand');
-
-            const hourDegrees = (hours + minutes / 60) * 30;
-            const minuteDegrees = (minutes + seconds / 60) * 6;
-            const secondDegrees = seconds * 6;
-
-            hourHand.style.transform = `rotate(${hourDegrees}deg)`;
-            minuteHand.style.transform = `rotate(${minuteDegrees}deg)`;
-            secondHand.style.transform = `rotate(${secondDegrees}deg)`;
+        // Check if color is light
+        function isLight(hex) {
+            const r = parseInt(hex.substr(1, 2), 16);
+            const g = parseInt(hex.substr(3, 2), 16);
+            const b = parseInt(hex.substr(5, 2), 16);
+            return (r * 299 + g * 587 + b * 114) / 1000 > 128;
         }
 
         // Apply Preset
         function applyPreset(name) {
             watchState = { ...presets[name] };
-            updateWatch();
             updateActiveButtons();
         }
 
         // Download Watch
         function downloadWatch() {
-            const canvas = document.createElement('canvas');
-            canvas.width = 300;
-            canvas.height = 350;
-            const ctx = canvas.getContext('2d');
-
-            // Draw background
-            ctx.fillStyle = '#ffffff';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // Draw left strap
-            ctx.fillStyle = watchState.strapColor;
-            ctx.beginPath();
-            ctx.roundRect(20, 75, 40, 150, 20);
-            ctx.fill();
-
-            // Draw right strap
-            ctx.fillStyle = watchState.strapColor;
-            ctx.beginPath();
-            ctx.roundRect(240, 75, 40, 150, 20);
-            ctx.fill();
-
-            // Draw frame
-            ctx.strokeStyle = watchState.frameColor;
-            ctx.lineWidth = 8;
-            ctx.beginPath();
-            ctx.arc(150, 125, 100, 0, Math.PI * 2);
-            ctx.stroke();
-
-            // Draw dial
-            ctx.fillStyle = watchState.dialColor;
-            ctx.beginPath();
-            ctx.arc(150, 125, 92, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Draw time
-            ctx.fillStyle = isLight(watchState.dialColor) ? '#000000' : '#ffffff';
-            ctx.font = 'bold 28px Arial';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString();
-            ctx.fillText(timeStr.substring(0, 5), 150, 125);
-
-            // Download
+            const canvas = document.getElementById('watchCanvas');
             const link = document.createElement('a');
             link.href = canvas.toDataURL('image/png');
-            link.download = `yash-watch-${Date.now()}.png`;
+            link.download = `yash-3d-watch-${Date.now()}.png`;
             link.click();
 
-            // Show success message
             const msg = document.getElementById('successMsg');
             msg.classList.add('show');
             setTimeout(() => msg.classList.remove('show'), 2000);
@@ -618,21 +549,62 @@
         // Reset Watch
         function resetWatch() {
             watchState = { ...presets.classic };
-            updateWatch();
             updateActiveButtons();
         }
 
+        // Mouse Controls
+        const canvas = document.getElementById('watchCanvas');
+        
+        canvas.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            lastX = e.clientX;
+            lastY = e.clientY;
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const deltaX = e.clientX - lastX;
+            const deltaY = e.clientY - lastY;
+            rotationY += deltaX * 0.01;
+            rotationX += deltaY * 0.01;
+            lastX = e.clientX;
+            lastY = e.clientY;
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        // Touch Controls
+        canvas.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            lastX = e.touches[0].clientX;
+            lastY = e.touches[0].clientY;
+        });
+
+        canvas.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            const deltaX = e.touches[0].clientX - lastX;
+            const deltaY = e.touches[0].clientY - lastY;
+            rotationY += deltaX * 0.01;
+            rotationX += deltaY * 0.01;
+            lastX = e.touches[0].clientX;
+            lastY = e.touches[0].clientY;
+        });
+
+        canvas.addEventListener('touchend', () => {
+            isDragging = false;
+        });
+
         // Animation Loop
         function animate() {
-            updateClockHands();
+            draw3DWatch();
             requestAnimationFrame(animate);
         }
 
         // Initialize
         window.addEventListener('DOMContentLoaded', () => {
-            createMarkers();
             initializeColorPickers();
-            updateWatch();
             updateActiveButtons();
             animate();
         });
