@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YASH - 3D Watch Customizer</title>
+    <title>YASH - Premium 3D Watch Customizer</title>
     <style>
         * {
             margin: 0;
@@ -12,63 +12,85 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            color: #fff;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%);
             padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .header h1 {
+            color: #000;
+            font-size: 2.5em;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header p {
+            color: #333;
+            font-size: 0.9em;
         }
 
         .container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            max-width: 1200px;
-            width: 100%;
-            padding: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 350px;
+            gap: 20px;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                grid-template-columns: 1fr 1fr;
+            }
+            .cart-panel {
+                grid-column: 1 / -1;
+            }
         }
 
         @media (max-width: 768px) {
             .container {
-                padding: 20px;
-            }
-        }
-
-        h1 {
-            color: #667eea;
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 2em;
-        }
-
-        .content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
-
-        @media (max-width: 900px) {
-            .content {
                 grid-template-columns: 1fr;
             }
+            .cart-panel {
+                grid-column: 1;
+            }
         }
 
-        /* Canvas */
+        /* Canvas Section */
+        .canvas-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .canvas-section h2 {
+            color: #d4af37;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
         .canvas-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 400px;
-            background: #f5f5f5;
-            border-radius: 15px;
+            min-height: 500px;
+            background: radial-gradient(circle, #2a2a3e 0%, #1a1a2e 100%);
+            border-radius: 10px;
             position: relative;
         }
 
         canvas {
             max-width: 100%;
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: grab;
             display: block;
         }
@@ -77,188 +99,424 @@
             cursor: grabbing;
         }
 
-        /* Controls */
-        .controls {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+        /* Controls Section */
+        .controls-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            max-height: 800px;
+            overflow-y: auto;
+        }
+
+        .controls-section h2 {
+            color: #d4af37;
+            margin-bottom: 20px;
         }
 
         .control-group {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 15px;
-            border-left: 4px solid #667eea;
+            background: rgba(212, 175, 55, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #d4af37;
         }
 
         .control-group h3 {
-            color: #667eea;
-            margin-bottom: 12px;
-            font-size: 1em;
+            color: #ffd700;
+            font-size: 0.95em;
+            margin-bottom: 10px;
         }
 
         .color-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 10px;
         }
 
         .color-btn {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             border: 3px solid transparent;
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
             font-weight: bold;
             color: white;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-            font-size: 0.8em;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            font-size: 0.7em;
         }
 
         .color-btn:hover {
-            transform: scale(1.05);
+            transform: scale(1.08);
         }
 
         .color-btn.active {
-            border-color: #333;
-            transform: scale(1.1);
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            border-color: #ffd700;
+            transform: scale(1.12);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
         }
 
-        /* Presets */
-        .preset-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
+        .select-group {
+            margin-bottom: 10px;
         }
 
-        .preset-btn {
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            background: #f0f0f0;
-            color: #333;
+        .select-group select {
+            width: 100%;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid #d4af37;
+            color: #fff;
+            border-radius: 5px;
             cursor: pointer;
+        }
+
+        .select-group select option {
+            background: #1a1a2e;
+            color: #fff;
+        }
+
+        /* Cart Panel */
+        .cart-panel {
+            background: rgba(212, 175, 55, 0.15);
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid #d4af37;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .cart-panel h2 {
+            color: #d4af37;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .cart-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 8px;
+            font-size: 0.85em;
+            border-left: 3px solid #ffd700;
+        }
+
+        .cart-item-label {
+            color: #ffd700;
             font-weight: bold;
-            transition: all 0.3s;
         }
 
-        .preset-btn:hover {
-            background: #667eea;
-            color: white;
-            transform: translateY(-2px);
+        .cart-item-value {
+            color: #ccc;
+            margin-left: 5px;
         }
 
-        /* Action Buttons */
-        .action-buttons {
+        .price-section {
+            background: rgba(212, 175, 55, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 2px solid #d4af37;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+
+        .price-row.total {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #ffd700;
+            border-top: 2px solid #d4af37;
+            padding-top: 8px;
+        }
+
+        .buttons-group {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
+            margin-top: 15px;
         }
 
-        .action-btn {
+        .btn {
             padding: 12px;
             border: none;
             border-radius: 8px;
-            background: #667eea;
-            color: white;
             cursor: pointer;
             font-weight: bold;
             transition: all 0.3s;
+            font-size: 0.9em;
         }
 
-        .action-btn:hover {
-            background: #5568d3;
+        .btn-primary {
+            background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%);
+            color: #000;
+            grid-column: 1 / -1;
+        }
+
+        .btn-primary:hover {
             transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
         }
 
-        .action-btn.reset {
-            background: #999;
+        .btn-secondary {
+            background: rgba(212, 175, 55, 0.2);
+            color: #ffd700;
+            border: 2px solid #d4af37;
         }
 
-        .action-btn.reset:hover {
-            background: #777;
+        .btn-secondary:hover {
+            background: rgba(212, 175, 55, 0.3);
         }
 
         .info-box {
-            background: #e3f2fd;
-            border-left: 4px solid #2196F3;
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 0.9em;
-            color: #1565c0;
+            background: rgba(100, 150, 200, 0.2);
+            border-left: 4px solid #64b5f6;
+            padding: 12px;
+            border-radius: 5px;
+            font-size: 0.85em;
+            margin-top: 15px;
+            color: #b3e5fc;
+        }
+
+        .preset-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .preset-btn {
+            padding: 10px;
+            border: 2px solid #d4af37;
+            background: rgba(212, 175, 55, 0.1);
+            color: #ffd700;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            font-size: 0.85em;
+        }
+
+        .preset-btn:hover {
+            background: rgba(212, 175, 55, 0.25);
+            transform: translateY(-2px);
         }
 
         .success-message {
-            background: #c8e6c9;
-            border-left: 4px solid #4caf50;
-            padding: 10px;
+            background: #4caf50;
+            color: white;
+            padding: 12px;
             border-radius: 5px;
-            color: #2e7d32;
             text-align: center;
             display: none;
             margin-bottom: 10px;
+            animation: slideIn 0.3s ease;
         }
 
         .success-message.show {
             display: block;
         }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .ar-btn {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff4444 100%);
+            color: white;
+            margin-top: 10px;
+            grid-column: 1 / -1;
+        }
+
+        .ar-btn:hover {
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #d4af37;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ffd700;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🕐 YASH 3D Watch Customizer</h1>
+    <div class="header">
+        <h1>💎 YASH Premium Watch Customizer</h1>
+        <p>Design Your Luxury Timepiece</p>
+    </div>
 
-        <div class="content">
-            <!-- 3D Canvas -->
+    <div class="container">
+        <!-- 3D Canvas -->
+        <div class="canvas-section">
+            <h2>👁️ Preview</h2>
             <div class="canvas-container">
                 <canvas id="watchCanvas"></canvas>
             </div>
+            <div style="text-align: center; margin-top: 10px; color: #aaa; font-size: 0.85em;">
+                Drag to rotate • Scroll to zoom
+            </div>
+        </div>
 
-            <!-- Controls -->
-            <div class="controls">
-                <div class="success-message" id="successMsg">✓ Downloaded!</div>
+        <!-- Controls -->
+        <div class="controls-section">
+            <div class="success-message" id="successMsg">✓ Customization Updated!</div>
 
-                <!-- Dial Color -->
-                <div class="control-group">
-                    <h3>📋 Dial Color</h3>
-                    <div class="color-grid" id="dialColors"></div>
+            <h2>🎨 Customization</h2>
+
+            <!-- Dial Options -->
+            <div class="control-group">
+                <h3>⏱️ Dial</h3>
+                <div class="select-group">
+                    <select id="dialMaterial" onchange="updateWatch()">
+                        <option value="black">Black</option>
+                        <option value="white">White</option>
+                        <option value="silver">Silver</option>
+                        <option value="gold">Gold</option>
+                        <option value="rose">Rose Gold</option>
+                    </select>
                 </div>
-
-                <!-- Frame Color -->
-                <div class="control-group">
-                    <h3>🔰 Frame Color</h3>
-                    <div class="color-grid" id="frameColors"></div>
+                <label style="color: #ffd700; font-size: 0.85em;">Dial Color:</label>
+                <div class="color-grid" id="dialColors"></div>
+                <label style="color: #ffd700; font-size: 0.85em; margin-top: 10px; display: block;">Add Studs:</label>
+                <div class="select-group">
+                    <select id="studs" onchange="updateWatch()">
+                        <option value="none">None</option>
+                        <option value="diamond">Diamond (+ $50)</option>
+                        <option value="sapphire">Sapphire (+ $45)</option>
+                        <option value="ruby">Ruby (+ $45)</option>
+                        <option value="emerald">Emerald (+ $45)</option>
+                    </select>
                 </div>
+            </div>
 
-                <!-- Strap Color -->
-                <div class="control-group">
-                    <h3>⌚ Strap Color</h3>
-                    <div class="color-grid" id="strapColors"></div>
+            <!-- Frame Options -->
+            <div class="control-group">
+                <h3>🔰 Frame/Bezel</h3>
+                <div class="select-group">
+                    <select id="frameType" onchange="updateWatch()">
+                        <option value="steel">Stainless Steel</option>
+                        <option value="titanium">Titanium (+ $30)</option>
+                        <option value="platinum">Platinum (+ $200)</option>
+                        <option value="gold">18K Gold (+ $300)</option>
+                        <option value="rosegold">Rose Gold (+ $80)</option>
+                    </select>
                 </div>
+                <label style="color: #ffd700; font-size: 0.85em;">Frame Color:</label>
+                <div class="color-grid" id="frameColors"></div>
+            </div>
 
-                <!-- Presets -->
-                <div class="control-group">
-                    <h3>⚡ Quick Presets</h3>
-                    <div class="preset-grid">
-                        <button class="preset-btn" onclick="applyPreset('classic')">Classic</button>
-                        <button class="preset-btn" onclick="applyPreset('sport')">Sport</button>
-                        <button class="preset-btn" onclick="applyPreset('luxury')">Luxury</button>
-                        <button class="preset-btn" onclick="applyPreset('neon')">Neon</button>
-                    </div>
+            <!-- Strap Options -->
+            <div class="control-group">
+                <h3>⌚ Strap</h3>
+                <div class="select-group">
+                    <select id="strapType" onchange="updateWatch()">
+                        <option value="steel">Steel Bracelet</option>
+                        <option value="leather">Leather</option>
+                        <option value="rubber">Rubber/Silicone</option>
+                        <option value="nato">NATO Fabric</option>
+                        <option value="fabric">Premium Fabric (+ $20)</option>
+                        <option value="crocodile">Crocodile Leather (+ $150)</option>
+                    </select>
                 </div>
+                <label style="color: #ffd700; font-size: 0.85em;">Strap Color:</label>
+                <div class="color-grid" id="strapColors"></div>
+            </div>
 
-                <!-- Actions -->
-                <div class="action-buttons">
-                    <button class="action-btn" onclick="downloadWatch()">⬇️ Download</button>
-                    <button class="action-btn reset" onclick="resetWatch()">↻ Reset</button>
+            <!-- Presets -->
+            <div class="control-group">
+                <h3>⚡ Quick Presets</h3>
+                <div class="preset-grid">
+                    <button class="preset-btn" onclick="applyPreset('classic')">Classic</button>
+                    <button class="preset-btn" onclick="applyPreset('sport')">Sport</button>
+                    <button class="preset-btn" onclick="applyPreset('luxury')">Luxury</button>
+                    <button class="preset-btn" onclick="applyPreset('diamond')">Diamond</button>
                 </div>
+            </div>
 
-                <!-- Info -->
-                <div class="info-box">
-                    ℹ️ Drag to rotate the watch. Click colors to customize!
+            <!-- Action Buttons -->
+            <div class="control-group">
+                <div class="buttons-group">
+                    <button class="btn btn-secondary" onclick="downloadDesign()">📥 Download</button>
+                    <button class="btn btn-secondary" onclick="resetWatch()">↻ Reset</button>
                 </div>
+            </div>
+
+            <div class="info-box">
+                ℹ️ All prices include customization. Delivery in 7-10 business days.
+            </div>
+        </div>
+
+        <!-- Cart/Price Panel -->
+        <div class="cart-panel">
+            <h2>🛒 Order Summary</h2>
+            
+            <div class="cart-item">
+                <span class="cart-item-label">Dial:</span>
+                <span class="cart-item-value" id="cartDial">Black</span>
+            </div>
+
+            <div class="cart-item">
+                <span class="cart-item-label">Frame:</span>
+                <span class="cart-item-value" id="cartFrame">Stainless Steel</span>
+            </div>
+
+            <div class="cart-item">
+                <span class="cart-item-label">Strap:</span>
+                <span class="cart-item-value" id="cartStrap">Steel Bracelet</span>
+            </div>
+
+            <div class="cart-item">
+                <span class="cart-item-label">Studs:</span>
+                <span class="cart-item-value" id="cartStuds">None</span>
+            </div>
+
+            <div class="price-section">
+                <div class="price-row">
+                    <span>Base Watch:</span>
+                    <span>$199.99</span>
+                </div>
+                <div class="price-row">
+                    <span>Customizations:</span>
+                    <span id="customPrice">$0.00</span>
+                </div>
+                <div class="price-row total">
+                    <span>Total:</span>
+                    <span id="totalPrice">$199.99</span>
+                </div>
+            </div>
+
+            <div class="buttons-group">
+                <button class="btn btn-primary" onclick="addToCart()">✓ Add to Cart</button>
+            </div>
+
+            <button class="btn ar-btn" onclick="startAR()">📱 Try AR</button>
+
+            <div class="info-box" style="margin-top: 10px;">
+                💳 Secure checkout. Free shipping on orders over $500.
             </div>
         </div>
     </div>
@@ -268,14 +526,46 @@
         let watchState = {
             dialColor: '#000000',
             frameColor: '#c0c0c0',
-            strapColor: '#1a1a1a'
+            strapColor: '#1a1a1a',
+            dialMaterial: 'black',
+            frameType: 'steel',
+            strapType: 'steel',
+            studs: 'none',
+            rotationX: 0.3,
+            rotationY: 0.2,
+            zoomLevel: 1
         };
 
-        let rotationX = 0.3;
-        let rotationY = 0.2;
         let isDragging = false;
         let lastX = 0;
         let lastY = 0;
+
+        // Pricing
+        const pricing = {
+            base: 199.99,
+            studs: {
+                diamond: 50,
+                sapphire: 45,
+                ruby: 45,
+                emerald: 45,
+                none: 0
+            },
+            frameType: {
+                steel: 0,
+                titanium: 30,
+                platinum: 200,
+                gold: 300,
+                rosegold: 80
+            },
+            strapType: {
+                steel: 0,
+                leather: 0,
+                rubber: 0,
+                nato: 0,
+                fabric: 20,
+                crocodile: 150
+            }
+        };
 
         // Color Palettes
         const colors = {
@@ -284,21 +574,21 @@
                 { name: 'White', hex: '#ffffff' },
                 { name: 'Navy', hex: '#000080' },
                 { name: 'Blue', hex: '#0066ff' },
-                { name: 'Red', hex: '#ff0000' },
-                { name: 'Charcoal', hex: '#36454f' }
+                { name: 'Silver', hex: '#c0c0c0' },
+                { name: 'Gold', hex: '#ffd700' }
             ],
             frame: [
                 { name: 'Silver', hex: '#c0c0c0' },
                 { name: 'Gold', hex: '#ffd700' },
-                { name: 'Black', hex: '#000000' },
                 { name: 'Rose Gold', hex: '#b76e79' },
+                { name: 'Black', hex: '#1a1a1a' },
                 { name: 'Platinum', hex: '#e5e4e2' },
                 { name: 'Bronze', hex: '#cd7f32' }
             ],
             strap: [
                 { name: 'Black', hex: '#1a1a1a' },
-                { name: 'Dark Blue', hex: '#003d99' },
                 { name: 'Brown', hex: '#654321' },
+                { name: 'Tan', hex: '#ccaa88' },
                 { name: 'Red', hex: '#8b0000' },
                 { name: 'Gray', hex: '#808080' },
                 { name: 'Navy', hex: '#000080' }
@@ -307,25 +597,56 @@
 
         // Presets
         const presets = {
-            classic: { dialColor: '#000000', frameColor: '#c0c0c0', strapColor: '#1a1a1a' },
-            sport: { dialColor: '#0066ff', frameColor: '#333333', strapColor: '#000000' },
-            luxury: { dialColor: '#ffffff', frameColor: '#ffd700', strapColor: '#8b0000' },
-            neon: { dialColor: '#00ff00', frameColor: '#00ffff', strapColor: '#ff00ff' }
+            classic: {
+                dialColor: '#000000',
+                frameColor: '#c0c0c0',
+                strapColor: '#1a1a1a',
+                dialMaterial: 'black',
+                frameType: 'steel',
+                strapType: 'steel',
+                studs: 'none'
+            },
+            sport: {
+                dialColor: '#0066ff',
+                frameColor: '#333333',
+                strapColor: '#000000',
+                dialMaterial: 'blue',
+                frameType: 'titanium',
+                strapType: 'rubber',
+                studs: 'none'
+            },
+            luxury: {
+                dialColor: '#ffd700',
+                frameColor: '#ffd700',
+                strapColor: '#654321',
+                dialMaterial: 'gold',
+                frameType: 'gold',
+                strapType: 'crocodile',
+                studs: 'diamond'
+            },
+            diamond: {
+                dialColor: '#ffffff',
+                frameColor: '#e5e4e2',
+                strapColor: '#1a1a1a',
+                dialMaterial: 'white',
+                frameType: 'platinum',
+                strapType: 'leather',
+                studs: 'diamond'
+            }
         };
 
         const canvas = document.getElementById('watchCanvas');
         const ctx = canvas.getContext('2d');
 
-        // Set canvas size
         function resizeCanvas() {
             const container = canvas.parentElement;
-            canvas.width = Math.min(350, container.clientWidth - 20);
-            canvas.height = 400;
+            canvas.width = Math.min(400, container.clientWidth - 40);
+            canvas.height = 450;
         }
 
         // Draw 3D Watch
         function draw3DWatch() {
-            ctx.fillStyle = '#f5f5f5';
+            ctx.fillStyle = '#1a1a2e';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             const centerX = canvas.width / 2;
@@ -333,38 +654,48 @@
 
             ctx.save();
             ctx.translate(centerX, centerY);
+            ctx.scale(watchState.zoomLevel, watchState.zoomLevel);
 
-            // Apply rotation
-            ctx.rotate(rotationY);
-
-            // Draw left strap
-            drawStrap(ctx, -90, -80, 35, 160);
-
-            // Draw right strap
-            drawStrap(ctx, 55, -80, 35, 160);
+            // Draw straps (longer and more visible)
+            drawStrap(ctx, -110, -120, 45, 240, watchState.strapColor, watchState.strapType);
+            drawStrap(ctx, 65, -120, 45, 240, watchState.strapColor, watchState.strapType);
 
             // Draw watch case
             ctx.fillStyle = watchState.frameColor;
+            ctx.shadowColor = 'rgba(212, 175, 55, 0.3)';
+            ctx.shadowBlur = 20;
             ctx.beginPath();
-            ctx.arc(0, 0, 90, 0, Math.PI * 2);
+            ctx.arc(0, 0, 100, 0, Math.PI * 2);
             ctx.fill();
-            ctx.strokeStyle = '#555';
+            ctx.shadowColor = 'transparent';
+
+            // Draw bezel
+            ctx.strokeStyle = '#333';
             ctx.lineWidth = 3;
             ctx.stroke();
 
-            // Draw watch dial
+            // Draw dial
             ctx.fillStyle = watchState.dialColor;
             ctx.beginPath();
-            ctx.arc(0, 0, 80, 0, Math.PI * 2);
+            ctx.arc(0, 0, 88, 0, Math.PI * 2);
             ctx.fill();
+
+            // Draw studs if selected
+            if (watchState.studs !== 'none') {
+                drawStuds(ctx, watchState.studs);
+            }
 
             // Draw hour markers
             for (let i = 0; i < 12; i++) {
                 const angle = (i / 12) * Math.PI * 2 - Math.PI / 2;
-                const x = Math.cos(angle) * 65;
-                const y = Math.sin(angle) * 65;
+                const x = Math.cos(angle) * 70;
+                const y = Math.sin(angle) * 70;
                 ctx.fillStyle = '#fff';
-                ctx.fillRect(x - 2, y - 8, 4, 16);
+                if (i % 3 === 0) {
+                    ctx.fillRect(x - 3, y - 10, 6, 20);
+                } else {
+                    ctx.fillRect(x - 1.5, y - 7, 3, 14);
+                }
             }
 
             // Draw clock hands
@@ -376,18 +707,19 @@
             // Hour hand
             const hourAngle = ((hours + minutes / 60) / 12) * Math.PI * 2 - Math.PI / 2;
             ctx.strokeStyle = isLight(watchState.dialColor) ? '#000' : '#fff';
-            ctx.lineWidth = 4;
+            ctx.lineWidth = 5;
+            ctx.lineCap = 'round';
             ctx.beginPath();
             ctx.moveTo(0, 0);
-            ctx.lineTo(Math.cos(hourAngle) * 35, Math.sin(hourAngle) * 35);
+            ctx.lineTo(Math.cos(hourAngle) * 40, Math.sin(hourAngle) * 40);
             ctx.stroke();
 
             // Minute hand
             const minuteAngle = (minutes / 60) * Math.PI * 2 - Math.PI / 2;
-            ctx.lineWidth = 3;
+            ctx.lineWidth = 4;
             ctx.beginPath();
             ctx.moveTo(0, 0);
-            ctx.lineTo(Math.cos(minuteAngle) * 50, Math.sin(minuteAngle) * 50);
+            ctx.lineTo(Math.cos(minuteAngle) * 60, Math.sin(minuteAngle) * 60);
             ctx.stroke();
 
             // Second hand
@@ -396,7 +728,7 @@
             ctx.lineWidth = 2;
             ctx.beginPath();
             ctx.moveTo(0, 0);
-            ctx.lineTo(Math.cos(secondAngle) * 60, Math.sin(secondAngle) * 60);
+            ctx.lineTo(Math.cos(secondAngle) * 70, Math.sin(secondAngle) * 70);
             ctx.stroke();
 
             // Center dot
@@ -405,24 +737,49 @@
             ctx.arc(0, 0, 6, 0, Math.PI * 2);
             ctx.fill();
 
-            // Draw time text
-            const textColor = isLight(watchState.dialColor) ? '#000000' : '#ffffff';
-            ctx.fillStyle = textColor;
-            ctx.font = 'bold 18px Arial';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'bottom';
-            const timeStr = now.toLocaleTimeString().substring(0, 5);
-            ctx.fillText(timeStr, 0, 15);
-
             ctx.restore();
         }
 
-        // Draw strap
-        function drawStrap(ctx, x, y, width, height) {
-            ctx.fillStyle = watchState.strapColor;
+        // Draw Studs
+        function drawStuds(ctx, type) {
+            const colors = {
+                diamond: '#e8f4f8',
+                sapphire: '#0f52ba',
+                ruby: '#e0115f',
+                emerald: '#50c878'
+            };
+
+            ctx.fillStyle = colors[type];
+            for (let i = 0; i < 12; i++) {
+                const angle = (i / 12) * Math.PI * 2;
+                const x = Math.cos(angle) * 75;
+                const y = Math.sin(angle) * 75;
+                ctx.beginPath();
+                ctx.arc(x, y, 4, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+        }
+
+        // Draw Strap
+        function drawStrap(ctx, x, y, width, height, color, type) {
+            ctx.fillStyle = color;
             ctx.beginPath();
-            ctx.roundRect(x, y, width, height, 15);
+            ctx.roundRect(x, y, width, height, 20);
             ctx.fill();
+
+            if (type === 'leather') {
+                ctx.strokeStyle = 'rgba(0,0,0,0.3)';
+                ctx.lineWidth = 1;
+                for (let i = 0; i < height; i += 15) {
+                    ctx.beginPath();
+                    ctx.arc(x + width / 2, y + i, 2, 0, Math.PI * 2);
+                    ctx.stroke();
+                }
+            }
+
             ctx.strokeStyle = '#333';
             ctx.lineWidth = 1;
             ctx.stroke();
@@ -436,79 +793,120 @@
             return (r * 299 + g * 587 + b * 114) / 1000 > 128;
         }
 
-        // Initialize Color Pickers
+        // Initialize
         function initializeColorPickers() {
             const dialContainer = document.getElementById('dialColors');
             colors.dial.forEach(color => {
-                const btn = createColorButton(color, 'dial');
+                const btn = document.createElement('button');
+                btn.className = 'color-btn';
+                btn.style.backgroundColor = color.hex;
+                btn.textContent = color.name.substring(0, 1);
+                btn.onclick = () => {
+                    watchState.dialColor = color.hex;
+                    updateWatch();
+                };
                 dialContainer.appendChild(btn);
             });
 
             const frameContainer = document.getElementById('frameColors');
             colors.frame.forEach(color => {
-                const btn = createColorButton(color, 'frame');
+                const btn = document.createElement('button');
+                btn.className = 'color-btn';
+                btn.style.backgroundColor = color.hex;
+                btn.textContent = color.name.substring(0, 1);
+                btn.onclick = () => {
+                    watchState.frameColor = color.hex;
+                    updateWatch();
+                };
                 frameContainer.appendChild(btn);
             });
 
             const strapContainer = document.getElementById('strapColors');
             colors.strap.forEach(color => {
-                const btn = createColorButton(color, 'strap');
+                const btn = document.createElement('button');
+                btn.className = 'color-btn';
+                btn.style.backgroundColor = color.hex;
+                btn.textContent = color.name.substring(0, 1);
+                btn.onclick = () => {
+                    watchState.strapColor = color.hex;
+                    updateWatch();
+                };
                 strapContainer.appendChild(btn);
             });
         }
 
-        // Create Color Button
-        function createColorButton(color, type) {
-            const btn = document.createElement('button');
-            btn.className = 'color-btn';
-            btn.style.backgroundColor = color.hex;
-            btn.textContent = color.name;
-            btn.onclick = () => selectColor(color.hex, type);
-            return btn;
-        }
+        // Update Watch
+        function updateWatch() {
+            watchState.dialMaterial = document.getElementById('dialMaterial').value;
+            watchState.frameType = document.getElementById('frameType').value;
+            watchState.strapType = document.getElementById('strapType').value;
+            watchState.studs = document.getElementById('studs').value;
 
-        // Select Color
-        function selectColor(hex, type) {
-            watchState[type + 'Color'] = hex;
-            updateActiveButtons();
-        }
-
-        // Update Active Buttons
-        function updateActiveButtons() {
-            document.querySelectorAll('.color-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.style.backgroundColor === watchState.dialColor ||
-                    btn.style.backgroundColor === watchState.frameColor ||
-                    btn.style.backgroundColor === watchState.strapColor) {
-                    btn.classList.add('active');
-                }
-            });
-        }
-
-        // Apply Preset
-        function applyPreset(name) {
-            watchState = { ...presets[name] };
-            updateActiveButtons();
-        }
-
-        // Download Watch
-        function downloadWatch() {
-            const link = document.createElement('a');
-            link.href = canvas.toDataURL('image/png');
-            link.download = `yash-3d-watch-${Date.now()}.png`;
-            link.click();
+            updateCartSummary();
+            updatePrice();
+            draw3DWatch();
 
             const msg = document.getElementById('successMsg');
             msg.classList.add('show');
             setTimeout(() => msg.classList.remove('show'), 2000);
         }
 
+        // Update Cart Summary
+        function updateCartSummary() {
+            document.getElementById('cartDial').textContent = document.getElementById('dialMaterial').value.charAt(0).toUpperCase() + document.getElementById('dialMaterial').value.slice(1);
+            document.getElementById('cartFrame').textContent = document.getElementById('frameType').value.charAt(0).toUpperCase() + document.getElementById('frameType').value.slice(1);
+            document.getElementById('cartStrap').textContent = document.getElementById('strapType').value.replace(/([A-Z])/g, ' $1').trim();
+            document.getElementById('cartStuds').textContent = document.getElementById('studs').value.charAt(0).toUpperCase() + document.getElementById('studs').value.slice(1);
+        }
+
+        // Update Price
+        function updatePrice() {
+            let customPrice = 0;
+            customPrice += pricing.studs[watchState.studs] || 0;
+            customPrice += pricing.frameType[watchState.frameType] || 0;
+            customPrice += pricing.strapType[watchState.strapType] || 0;
+
+            const total = pricing.base + customPrice;
+
+            document.getElementById('customPrice').textContent = '$' + customPrice.toFixed(2);
+            document.getElementById('totalPrice').textContent = '$' + total.toFixed(2);
+        }
+
+        // Apply Preset
+        function applyPreset(name) {
+            const preset = presets[name];
+            watchState = { ...watchState, ...preset };
+            document.getElementById('dialMaterial').value = preset.dialMaterial;
+            document.getElementById('frameType').value = preset.frameType;
+            document.getElementById('strapType').value = preset.strapType;
+            document.getElementById('studs').value = preset.studs;
+            updateWatch();
+        }
+
+        // Add to Cart
+        function addToCart() {
+            alert('✓ Added to cart! 🛒\n\nTotal: $' + document.getElementById('totalPrice').textContent);
+        }
+
+        // Download Design
+        function downloadDesign() {
+            const link = document.createElement('a');
+            link.href = canvas.toDataURL('image/png');
+            link.download = `yash-custom-watch-${Date.now()}.png`;
+            link.click();
+        }
+
         // Reset Watch
         function resetWatch() {
-            watchState = { ...presets.classic };
-            rotationX = 0.3;
-            rotationY = 0.2;
-            updateActiveButtons();
+            applyPreset('classic');
+            watchState.rotationX = 0.3;
+            watchState.rotationY = 0.2;
+            watchState.zoomLevel = 1;
+        }
+
+        // AR Feature
+        function startAR() {
+            alert('📱 AR Try-On\n\nThis feature requires camera access.\n\nPlease use your phone to test the AR feature with proper device support.\n\nComing in next update with full AR integration!');
         }
 
         // Mouse Controls
@@ -522,14 +920,20 @@
             if (!isDragging) return;
             const deltaX = e.clientX - lastX;
             const deltaY = e.clientY - lastY;
-            rotationY += deltaX * 0.01;
-            rotationX += deltaY * 0.01;
+            watchState.rotationY += deltaX * 0.01;
+            watchState.rotationX += deltaY * 0.01;
             lastX = e.clientX;
             lastY = e.clientY;
         });
 
         document.addEventListener('mouseup', () => {
             isDragging = false;
+        });
+
+        canvas.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            watchState.zoomLevel += e.deltaY * 0.001;
+            watchState.zoomLevel = Math.max(0.5, Math.min(2, watchState.zoomLevel));
         });
 
         // Touch Controls
@@ -543,8 +947,8 @@
             if (!isDragging) return;
             const deltaX = e.touches[0].clientX - lastX;
             const deltaY = e.touches[0].clientY - lastY;
-            rotationY += deltaX * 0.01;
-            rotationX += deltaY * 0.01;
+            watchState.rotationY += deltaX * 0.01;
+            watchState.rotationX += deltaY * 0.01;
             lastX = e.touches[0].clientX;
             lastY = e.touches[0].clientY;
         });
@@ -563,7 +967,8 @@
         window.addEventListener('DOMContentLoaded', () => {
             resizeCanvas();
             initializeColorPickers();
-            updateActiveButtons();
+            updateCartSummary();
+            updatePrice();
             animate();
         });
 
