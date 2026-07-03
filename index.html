@@ -63,12 +63,14 @@
             min-height: 400px;
             background: #f5f5f5;
             border-radius: 15px;
+            position: relative;
         }
 
         canvas {
             max-width: 100%;
             border-radius: 10px;
             cursor: grab;
+            display: block;
         }
 
         canvas:active {
@@ -211,7 +213,7 @@
         <div class="content">
             <!-- 3D Canvas -->
             <div class="canvas-container">
-                <canvas id="watchCanvas" width="350" height="400"></canvas>
+                <canvas id="watchCanvas"></canvas>
             </div>
 
             <!-- Controls -->
@@ -255,7 +257,7 @@
 
                 <!-- Info -->
                 <div class="info-box">
-                    ℹ️ 3D watch with rotating straps. Drag to rotate!
+                    ℹ️ Drag to rotate the watch. Click colors to customize!
                 </div>
             </div>
         </div>
@@ -311,163 +313,127 @@
             neon: { dialColor: '#00ff00', frameColor: '#00ffff', strapColor: '#ff00ff' }
         };
 
-        // 3D Vector
-        class Vector3 {
-            constructor(x = 0, y = 0, z = 0) {
-                this.x = x;
-                this.y = y;
-                this.z = z;
-            }
+        const canvas = document.getElementById('watchCanvas');
+        const ctx = canvas.getContext('2d');
 
-            rotateX(angle) {
-                const cos = Math.cos(angle);
-                const sin = Math.sin(angle);
-                const y = this.y * cos - this.z * sin;
-                const z = this.y * sin + this.z * cos;
-                return new Vector3(this.x, y, z);
-            }
-
-            rotateY(angle) {
-                const cos = Math.cos(angle);
-                const sin = Math.sin(angle);
-                const x = this.x * cos + this.z * sin;
-                const z = -this.x * sin + this.z * cos;
-                return new Vector3(x, this.y, z);
-            }
-
-            project(distance = 5) {
-                const scale = distance / (distance + this.z);
-                return {
-                    x: this.x * scale,
-                    y: this.y * scale,
-                    z: this.z,
-                    scale: scale
-                };
-            }
+        // Set canvas size
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            canvas.width = Math.min(350, container.clientWidth - 20);
+            canvas.height = 400;
         }
 
         // Draw 3D Watch
         function draw3DWatch() {
-            const canvas = document.getElementById('watchCanvas');
-            const ctx = canvas.getContext('2d');
-            
             ctx.fillStyle = '#f5f5f5';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+
             ctx.save();
-            ctx.translate(canvas.width / 2, canvas.height / 2);
+            ctx.translate(centerX, centerY);
 
-            // Draw straps (left and right)
-            drawStrap(ctx, -60, -80, 30, 160, rotationX, rotationY);
-            drawStrap(ctx, 30, -80, 30, 160, rotationX, rotationY);
+            // Apply rotation
+            ctx.rotate(rotationY);
 
-            // Draw watch case
-            drawWatch(ctx, rotationX, rotationY);
+            // Draw left strap
+            drawStrap(ctx, -90, -80, 35, 160);
 
-            ctx.restore();
-        }
-
-        // Draw Individual Strap
-        function drawStrap(ctx, x, y, width, height, rotX, rotY) {
-            const corners = [
-                new Vector3(x, y, 10),
-                new Vector3(x + width, y, 10),
-                new Vector3(x + width, y + height, 10),
-                new Vector3(x, y + height, 10),
-                new Vector3(x, y, -5),
-                new Vector3(x + width, y, -5),
-                new Vector3(x + width, y + height, -5),
-                new Vector3(x, y + height, -5)
-            ];
-
-            // Rotate
-            const rotated = corners.map(v => v.rotateX(rotX).rotateY(rotY));
-            const projected = rotated.map(v => v.project());
-
-            // Sort by z-depth
-            const faces = [
-                { points: [0, 1, 2, 3], color: watchState.strapColor },
-                { points: [4, 5, 6, 7], color: '#999999' }
-            ];
-
-            faces.sort((a, b) => {
-                const avgA = a.points.reduce((sum, i) => sum + projected[i].z, 0) / a.points.length;
-                const avgB = b.points.reduce((sum, i) => sum + projected[i].z, 0) / b.points.length;
-                return avgA - avgB;
-            });
-
-            faces.forEach(face => {
-                ctx.fillStyle = face.color;
-                ctx.beginPath();
-                face.points.forEach((i, idx) => {
-                    const proj = projected[i];
-                    if (idx === 0) ctx.moveTo(proj.x, proj.y);
-                    else ctx.lineTo(proj.x, proj.y);
-                });
-                ctx.closePath();
-                ctx.fill();
-                ctx.strokeStyle = '#333';
-                ctx.lineWidth = 0.5;
-                ctx.stroke();
-            });
-        }
-
-        // Draw 3D Watch
-        function drawWatch(ctx, rotX, rotY) {
-            // Create watch case cylinder
-            const mainCircle = [];
-            for (let i = 0; i < 20; i++) {
-                const angle = (i / 20) * Math.PI * 2;
-                const x = Math.cos(angle) * 80;
-                const z = Math.sin(angle) * 80;
-                mainCircle.push(new Vector3(x, -40, z));
-            }
-
-            // Rotate and project
-            const rotated = mainCircle.map(v => v.rotateX(rotX).rotateY(rotY));
-            const projected = rotated.map(v => v.project());
+            // Draw right strap
+            drawStrap(ctx, 55, -80, 35, 160);
 
             // Draw watch case
             ctx.fillStyle = watchState.frameColor;
             ctx.beginPath();
-            projected.forEach((p, i) => {
-                if (i === 0) ctx.moveTo(p.x, p.y);
-                else ctx.lineTo(p.x, p.y);
-            });
-            ctx.closePath();
+            ctx.arc(0, 0, 90, 0, Math.PI * 2);
             ctx.fill();
             ctx.strokeStyle = '#555';
-            ctx.lineWidth = 2;
+            ctx.lineWidth = 3;
             ctx.stroke();
 
-            // Draw dial (top face)
+            // Draw watch dial
             ctx.fillStyle = watchState.dialColor;
             ctx.beginPath();
-            projected.forEach((p, i) => {
-                if (i === 0) ctx.moveTo(p.x, p.y);
-                else ctx.lineTo(p.x, p.y);
-            });
-            ctx.closePath();
+            ctx.arc(0, 0, 80, 0, Math.PI * 2);
             ctx.fill();
-
-            // Draw time on dial
-            const textColor = isLight(watchState.dialColor) ? '#000000' : '#ffffff';
-            ctx.fillStyle = textColor;
-            ctx.font = 'bold 24px Arial';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString().substring(0, 5);
-            ctx.fillText(timeStr, 0, 10);
 
             // Draw hour markers
             for (let i = 0; i < 12; i++) {
-                const angle = (i / 12) * Math.PI * 2;
+                const angle = (i / 12) * Math.PI * 2 - Math.PI / 2;
                 const x = Math.cos(angle) * 65;
-                const y = -30 + Math.sin(angle) * 10;
+                const y = Math.sin(angle) * 65;
                 ctx.fillStyle = '#fff';
-                ctx.fillRect(x - 1, y - 4, 2, 8);
+                ctx.fillRect(x - 2, y - 8, 4, 16);
             }
+
+            // Draw clock hands
+            const now = new Date();
+            const hours = now.getHours() % 12;
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+
+            // Hour hand
+            const hourAngle = ((hours + minutes / 60) / 12) * Math.PI * 2 - Math.PI / 2;
+            ctx.strokeStyle = isLight(watchState.dialColor) ? '#000' : '#fff';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(Math.cos(hourAngle) * 35, Math.sin(hourAngle) * 35);
+            ctx.stroke();
+
+            // Minute hand
+            const minuteAngle = (minutes / 60) * Math.PI * 2 - Math.PI / 2;
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(Math.cos(minuteAngle) * 50, Math.sin(minuteAngle) * 50);
+            ctx.stroke();
+
+            // Second hand
+            const secondAngle = (seconds / 60) * Math.PI * 2 - Math.PI / 2;
+            ctx.strokeStyle = '#ff6b6b';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(Math.cos(secondAngle) * 60, Math.sin(secondAngle) * 60);
+            ctx.stroke();
+
+            // Center dot
+            ctx.fillStyle = '#fff';
+            ctx.beginPath();
+            ctx.arc(0, 0, 6, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Draw time text
+            const textColor = isLight(watchState.dialColor) ? '#000000' : '#ffffff';
+            ctx.fillStyle = textColor;
+            ctx.font = 'bold 18px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+            const timeStr = now.toLocaleTimeString().substring(0, 5);
+            ctx.fillText(timeStr, 0, 15);
+
+            ctx.restore();
+        }
+
+        // Draw strap
+        function drawStrap(ctx, x, y, width, height) {
+            ctx.fillStyle = watchState.strapColor;
+            ctx.beginPath();
+            ctx.roundRect(x, y, width, height, 15);
+            ctx.fill();
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+        }
+
+        // Check if color is light
+        function isLight(hex) {
+            const r = parseInt(hex.substr(1, 2), 16);
+            const g = parseInt(hex.substr(3, 2), 16);
+            const b = parseInt(hex.substr(5, 2), 16);
+            return (r * 299 + g * 587 + b * 114) / 1000 > 128;
         }
 
         // Initialize Color Pickers
@@ -519,14 +485,6 @@
             });
         }
 
-        // Check if color is light
-        function isLight(hex) {
-            const r = parseInt(hex.substr(1, 2), 16);
-            const g = parseInt(hex.substr(3, 2), 16);
-            const b = parseInt(hex.substr(5, 2), 16);
-            return (r * 299 + g * 587 + b * 114) / 1000 > 128;
-        }
-
         // Apply Preset
         function applyPreset(name) {
             watchState = { ...presets[name] };
@@ -535,7 +493,6 @@
 
         // Download Watch
         function downloadWatch() {
-            const canvas = document.getElementById('watchCanvas');
             const link = document.createElement('a');
             link.href = canvas.toDataURL('image/png');
             link.download = `yash-3d-watch-${Date.now()}.png`;
@@ -549,19 +506,19 @@
         // Reset Watch
         function resetWatch() {
             watchState = { ...presets.classic };
+            rotationX = 0.3;
+            rotationY = 0.2;
             updateActiveButtons();
         }
 
         // Mouse Controls
-        const canvas = document.getElementById('watchCanvas');
-        
         canvas.addEventListener('mousedown', (e) => {
             isDragging = true;
             lastX = e.clientX;
             lastY = e.clientY;
         });
 
-        canvas.addEventListener('mousemove', (e) => {
+        document.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
             const deltaX = e.clientX - lastX;
             const deltaY = e.clientY - lastY;
@@ -571,7 +528,7 @@
             lastY = e.clientY;
         });
 
-        canvas.addEventListener('mouseup', () => {
+        document.addEventListener('mouseup', () => {
             isDragging = false;
         });
 
@@ -582,7 +539,7 @@
             lastY = e.touches[0].clientY;
         });
 
-        canvas.addEventListener('touchmove', (e) => {
+        document.addEventListener('touchmove', (e) => {
             if (!isDragging) return;
             const deltaX = e.touches[0].clientX - lastX;
             const deltaY = e.touches[0].clientY - lastY;
@@ -592,7 +549,7 @@
             lastY = e.touches[0].clientY;
         });
 
-        canvas.addEventListener('touchend', () => {
+        document.addEventListener('touchend', () => {
             isDragging = false;
         });
 
@@ -604,10 +561,13 @@
 
         // Initialize
         window.addEventListener('DOMContentLoaded', () => {
+            resizeCanvas();
             initializeColorPickers();
             updateActiveButtons();
             animate();
         });
+
+        window.addEventListener('resize', resizeCanvas);
     </script>
 </body>
 </html>
