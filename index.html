@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YASH - Premium 3D Watch Customizer</title>
+    <title>YASH Premium - Luxury Watch Customizer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,41 +13,55 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1229 100%);
             min-height: 100vh;
-            color: #fff;
+            color: #e0e0e0;
+            overflow-x: hidden;
         }
 
+        /* Header */
         .header {
-            background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%);
-            padding: 20px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(255, 215, 0, 0.05) 100%);
+            border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+            padding: 30px 20px;
             text-align: center;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(212, 175, 55, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .header h1 {
-            color: #000;
-            font-size: 2.5em;
-            margin: 0;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Playfair Display', serif;
+            font-size: 3em;
+            background: linear-gradient(135deg, #d4af37 0%, #ffd700 50%, #d4af37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+            margin-bottom: 8px;
+            letter-spacing: 2px;
         }
 
         .header p {
-            color: #333;
-            font-size: 0.9em;
+            color: #b0b0b0;
+            font-size: 1.1em;
+            font-weight: 300;
+            letter-spacing: 1px;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 40px 20px;
             display: grid;
-            grid-template-columns: 1fr 1fr 350px;
-            gap: 20px;
+            grid-template-columns: 1.2fr 1fr 380px;
+            gap: 30px;
         }
 
-        @media (max-width: 1200px) {
+        @media (max-width: 1400px) {
             .container {
                 grid-template-columns: 1fr 1fr;
             }
@@ -55,7 +70,7 @@
             }
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
             .container {
                 grid-template-columns: 1fr;
             }
@@ -66,256 +81,412 @@
 
         /* Canvas Section */
         .canvas-section {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 20px;
-            border: 2px solid rgba(212, 175, 55, 0.3);
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, rgba(255, 215, 0, 0.03) 100%);
+            border-radius: 20px;
+            padding: 30px;
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        .canvas-section:hover {
+            border-color: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 20px 50px rgba(212, 175, 55, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2);
         }
 
         .canvas-section h2 {
-            color: #d4af37;
-            margin-bottom: 15px;
+            font-family: 'Playfair Display', serif;
+            color: #ffd700;
+            margin-bottom: 20px;
+            font-size: 1.8em;
             text-align: center;
+            letter-spacing: 1px;
         }
 
         .canvas-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 500px;
-            background: radial-gradient(circle, #2a2a3e 0%, #1a1a2e 100%);
-            border-radius: 10px;
+            min-height: 550px;
+            background: radial-gradient(circle at 30% 50%, rgba(212, 175, 55, 0.08) 0%, transparent 50%), 
+                        radial-gradient(circle at 70% 50%, rgba(100, 150, 200, 0.05) 0%, transparent 50%),
+                        linear-gradient(135deg, #0a0e27 0%, #151a35 100%);
+            border-radius: 15px;
             position: relative;
+            overflow: hidden;
         }
 
         canvas {
             max-width: 100%;
-            border-radius: 8px;
-            cursor: grab;
             display: block;
+            filter: drop-shadow(0 10px 30px rgba(212, 175, 55, 0.2));
+            cursor: grab;
+            transition: filter 0.3s ease;
+        }
+
+        canvas:hover {
+            filter: drop-shadow(0 15px 40px rgba(212, 175, 55, 0.3));
         }
 
         canvas:active {
             cursor: grabbing;
         }
 
+        .canvas-info {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #888;
+            font-size: 0.85em;
+            text-align: center;
+        }
+
         /* Controls Section */
         .controls-section {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 20px;
-            border: 2px solid rgba(212, 175, 55, 0.3);
-            max-height: 800px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, rgba(255, 215, 0, 0.03) 100%);
+            border-radius: 20px;
+            padding: 30px;
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            max-height: 900px;
             overflow-y: auto;
+            transition: all 0.4s ease;
+        }
+
+        .controls-section:hover {
+            border-color: rgba(212, 175, 55, 0.4);
         }
 
         .controls-section h2 {
-            color: #d4af37;
-            margin-bottom: 20px;
+            font-family: 'Playfair Display', serif;
+            color: #ffd700;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            text-align: center;
+            letter-spacing: 1px;
         }
 
         .control-group {
-            background: rgba(212, 175, 55, 0.1);
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.12) 0%, rgba(255, 215, 0, 0.05) 100%);
+            padding: 18px;
+            border-radius: 12px;
+            margin-bottom: 20px;
             border-left: 4px solid #d4af37;
+            transition: all 0.3s ease;
+        }
+
+        .control-group:hover {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.18) 0%, rgba(255, 215, 0, 0.08) 100%);
+            transform: translateX(5px);
         }
 
         .control-group h3 {
             color: #ffd700;
-            font-size: 0.95em;
-            margin-bottom: 10px;
+            font-size: 1em;
+            margin-bottom: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
 
         .color-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: 8px;
             margin-bottom: 10px;
         }
 
         .color-btn {
             width: 100%;
-            padding: 10px;
+            aspect-ratio: 1;
             border: 3px solid transparent;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: all 0.3s;
-            font-weight: bold;
+            transition: all 0.3s ease;
+            font-weight: 600;
             color: white;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-            font-size: 0.7em;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            font-size: 0.65em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .color-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.3), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .color-btn:hover {
-            transform: scale(1.08);
+            transform: scale(1.1) translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .color-btn:hover::before {
+            opacity: 1;
         }
 
         .color-btn.active {
             border-color: #ffd700;
-            transform: scale(1.12);
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+            transform: scale(1.15) translateY(-5px);
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.2);
         }
 
         .select-group {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+        }
+
+        .select-group label {
+            display: block;
+            color: #ffd700;
+            font-size: 0.85em;
+            margin-bottom: 6px;
+            font-weight: 600;
         }
 
         .select-group select {
             width: 100%;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 2px solid #d4af37;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(212, 175, 55, 0.4);
             color: #fff;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .select-group select:hover {
+            border-color: #d4af37;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .select-group select:focus {
+            outline: none;
+            border-color: #ffd700;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
         }
 
         .select-group select option {
-            background: #1a1a2e;
+            background: #0a0e27;
             color: #fff;
         }
 
         /* Cart Panel */
         .cart-panel {
-            background: rgba(212, 175, 55, 0.15);
-            border-radius: 15px;
-            padding: 20px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(255, 215, 0, 0.08) 100%);
+            border-radius: 20px;
+            padding: 30px;
             border: 2px solid #d4af37;
             height: fit-content;
             position: sticky;
-            top: 20px;
+            top: 100px;
+            box-shadow: 0 8px 32px rgba(212, 175, 55, 0.2);
+            transition: all 0.4s ease;
+        }
+
+        .cart-panel:hover {
+            box-shadow: 0 15px 50px rgba(212, 175, 55, 0.3);
+            transform: translateY(-5px);
         }
 
         .cart-panel h2 {
-            color: #d4af37;
-            margin-bottom: 15px;
+            font-family: 'Playfair Display', serif;
+            color: #ffd700;
+            margin-bottom: 20px;
             text-align: center;
+            font-size: 1.6em;
+            letter-spacing: 1px;
         }
 
         .cart-item {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 8px;
-            font-size: 0.85em;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 0.9em;
             border-left: 3px solid #ffd700;
+            transition: all 0.3s ease;
+        }
+
+        .cart-item:hover {
+            background: rgba(0, 0, 0, 0.3);
+            transform: translateX(3px);
         }
 
         .cart-item-label {
             color: #ffd700;
-            font-weight: bold;
+            font-weight: 600;
         }
 
         .cart-item-value {
             color: #ccc;
-            margin-left: 5px;
+            margin-left: 8px;
         }
 
         .price-section {
-            background: rgba(212, 175, 55, 0.2);
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 15px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(255, 215, 0, 0.1) 100%);
+            padding: 18px;
+            border-radius: 12px;
+            margin-top: 18px;
             border: 2px solid #d4af37;
         }
 
         .price-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 0.9em;
+            margin-bottom: 10px;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+        }
+
+        .price-row:hover {
+            color: #ffd700;
         }
 
         .price-row.total {
-            font-size: 1.2em;
-            font-weight: bold;
+            font-size: 1.4em;
+            font-weight: 800;
             color: #ffd700;
             border-top: 2px solid #d4af37;
-            padding-top: 8px;
+            padding-top: 12px;
         }
 
         .buttons-group {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
-            margin-top: 15px;
+            margin-top: 20px;
         }
 
         .btn {
-            padding: 12px;
+            padding: 14px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
-            font-size: 0.9em;
+            font-weight: 700;
+            transition: all 0.4s ease;
+            font-size: 0.95em;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.3), transparent 70%);
+            transform: translateX(-100%);
+        }
+
+        .btn:hover::before {
+            animation: shine 0.6s ease;
+        }
+
+        @keyframes shine {
+            to {
+                transform: translateX(100%);
+            }
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%);
+            background: linear-gradient(135deg, #d4af37 0%, #ffd700 50%, #d4af37 100%);
             color: #000;
             grid-column: 1 / -1;
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.5);
         }
 
         .btn-secondary {
-            background: rgba(212, 175, 55, 0.2);
+            background: rgba(212, 175, 55, 0.15);
             color: #ffd700;
             border: 2px solid #d4af37;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
         }
 
         .btn-secondary:hover {
-            background: rgba(212, 175, 55, 0.3);
+            background: rgba(212, 175, 55, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-ar {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff4444 100%);
+            color: white;
+            grid-column: 1 / -1;
+            margin-top: 10px;
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+        }
+
+        .btn-ar:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 107, 107, 0.5);
         }
 
         .info-box {
-            background: rgba(100, 150, 200, 0.2);
+            background: linear-gradient(135deg, rgba(100, 150, 200, 0.15) 0%, rgba(100, 150, 200, 0.05) 100%);
             border-left: 4px solid #64b5f6;
-            padding: 12px;
-            border-radius: 5px;
+            padding: 14px;
+            border-radius: 8px;
             font-size: 0.85em;
             margin-top: 15px;
             color: #b3e5fc;
+            transition: all 0.3s ease;
+        }
+
+        .info-box:hover {
+            background: linear-gradient(135deg, rgba(100, 150, 200, 0.2) 0%, rgba(100, 150, 200, 0.08) 100%);
         }
 
         .preset-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
+            gap: 10px;
         }
 
         .preset-btn {
-            padding: 10px;
+            padding: 12px;
             border: 2px solid #d4af37;
             background: rgba(212, 175, 55, 0.1);
             color: #ffd700;
-            border-radius: 5px;
+            border-radius: 10px;
             cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
-            font-size: 0.85em;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+            letter-spacing: 0.5px;
         }
 
         .preset-btn:hover {
             background: rgba(212, 175, 55, 0.25);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
         }
 
         .success-message {
-            background: #4caf50;
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
             color: white;
-            padding: 12px;
-            border-radius: 5px;
+            padding: 14px;
+            border-radius: 10px;
             text-align: center;
             display: none;
-            margin-bottom: 10px;
-            animation: slideIn 0.3s ease;
+            margin-bottom: 15px;
+            animation: slideIn 0.4s ease;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
 
         .success-message.show {
@@ -325,7 +496,7 @@
         @keyframes slideIn {
             from {
                 opacity: 0;
-                transform: translateY(-10px);
+                transform: translateY(-15px);
             }
             to {
                 opacity: 1;
@@ -333,122 +504,141 @@
             }
         }
 
-        .ar-btn {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ff4444 100%);
-            color: white;
-            margin-top: 10px;
-            grid-column: 1 / -1;
-        }
-
-        .ar-btn:hover {
-            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
-        }
-
+        /* Scrollbar */
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 10px;
         }
 
         ::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.1);
+            background: rgba(0, 0, 0, 0.2);
             border-radius: 10px;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #d4af37;
+            background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%);
             border-radius: 10px;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #ffd700;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(255, 215, 0, 0.05) 100%);
+            border-top: 2px solid rgba(212, 175, 55, 0.3);
+            padding: 30px 20px;
+            text-align: center;
+            color: #888;
+            margin-top: 60px;
+        }
+
+        .footer p {
+            margin: 5px 0;
+            font-size: 0.9em;
+        }
+
+        .footer-highlight {
+            color: #ffd700;
+            font-weight: 600;
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>💎 YASH Premium Watch Customizer</h1>
-        <p>Design Your Luxury Timepiece</p>
+        <h1>✨ YASH PREMIUM ✨</h1>
+        <p>Craft Your Luxury Timepiece - Unlimited Customization</p>
     </div>
 
     <div class="container">
         <!-- 3D Canvas -->
         <div class="canvas-section">
-            <h2>👁️ Preview</h2>
+            <h2>👁️ Live Preview</h2>
             <div class="canvas-container">
                 <canvas id="watchCanvas"></canvas>
-            </div>
-            <div style="text-align: center; margin-top: 10px; color: #aaa; font-size: 0.85em;">
-                Drag to rotate • Scroll to zoom
+                <div class="canvas-info">🖱️ Drag to rotate • Scroll to zoom</div>
             </div>
         </div>
 
         <!-- Controls -->
         <div class="controls-section">
-            <div class="success-message" id="successMsg">✓ Customization Updated!</div>
+            <div class="success-message" id="successMsg">✓ Updated!</div>
 
-            <h2>🎨 Customization</h2>
+            <h2>🎨 Design</h2>
 
-            <!-- Dial Options -->
+            <!-- Dial -->
             <div class="control-group">
-                <h3>⏱️ Dial</h3>
+                <h3>⏱️ Dial Face</h3>
                 <div class="select-group">
+                    <label>Material</label>
                     <select id="dialMaterial" onchange="updateWatch()">
-                        <option value="black">Black</option>
+                        <option value="matte-black">Matte Black</option>
+                        <option value="glossy-black">Glossy Black</option>
                         <option value="white">White</option>
                         <option value="silver">Silver</option>
                         <option value="gold">Gold</option>
-                        <option value="rose">Rose Gold</option>
+                        <option value="rose-gold">Rose Gold</option>
+                        <option value="sunburst">Sunburst Blue</option>
+                        <option value="meteorite">Meteorite</option>
                     </select>
                 </div>
-                <label style="color: #ffd700; font-size: 0.85em;">Dial Color:</label>
+                <label style="color: #ffd700; font-size: 0.85em; margin-top: 8px; display: block;">Colors:</label>
                 <div class="color-grid" id="dialColors"></div>
-                <label style="color: #ffd700; font-size: 0.85em; margin-top: 10px; display: block;">Add Studs:</label>
-                <div class="select-group">
+                <div class="select-group" style="margin-top: 12px;">
+                    <label>Dial Studs</label>
                     <select id="studs" onchange="updateWatch()">
                         <option value="none">None</option>
-                        <option value="diamond">Diamond (+ $50)</option>
-                        <option value="sapphire">Sapphire (+ $45)</option>
-                        <option value="ruby">Ruby (+ $45)</option>
-                        <option value="emerald">Emerald (+ $45)</option>
+                        <option value="diamond">💎 Diamond (+$50)</option>
+                        <option value="sapphire">💙 Sapphire (+$45)</option>
+                        <option value="ruby">❤️ Ruby (+$45)</option>
+                        <option value="emerald">💚 Emerald (+$45)</option>
+                        <option value="topaz">🟡 Topaz (+$40)</option>
                     </select>
                 </div>
             </div>
 
-            <!-- Frame Options -->
+            <!-- Frame -->
             <div class="control-group">
-                <h3>🔰 Frame/Bezel</h3>
+                <h3>🔰 Frame/Case</h3>
                 <div class="select-group">
+                    <label>Metal Type</label>
                     <select id="frameType" onchange="updateWatch()">
                         <option value="steel">Stainless Steel</option>
-                        <option value="titanium">Titanium (+ $30)</option>
-                        <option value="platinum">Platinum (+ $200)</option>
-                        <option value="gold">18K Gold (+ $300)</option>
-                        <option value="rosegold">Rose Gold (+ $80)</option>
+                        <option value="titanium">Titanium (+$30)</option>
+                        <option value="platinum">Platinum (+$200)</option>
+                        <option value="gold">18K Gold (+$300)</option>
+                        <option value="rosegold">Rose Gold (+$80)</option>
+                        <option value="bronze">Bronze (+$25)</option>
                     </select>
                 </div>
-                <label style="color: #ffd700; font-size: 0.85em;">Frame Color:</label>
+                <label style="color: #ffd700; font-size: 0.85em; margin-top: 8px; display: block;">Colors:</label>
                 <div class="color-grid" id="frameColors"></div>
             </div>
 
-            <!-- Strap Options -->
+            <!-- Strap -->
             <div class="control-group">
-                <h3>⌚ Strap</h3>
+                <h3>⌚ Strap/Band</h3>
                 <div class="select-group">
+                    <label>Material Type</label>
                     <select id="strapType" onchange="updateWatch()">
                         <option value="steel">Steel Bracelet</option>
-                        <option value="leather">Leather</option>
+                        <option value="leather">Genuine Leather</option>
                         <option value="rubber">Rubber/Silicone</option>
                         <option value="nato">NATO Fabric</option>
-                        <option value="fabric">Premium Fabric (+ $20)</option>
-                        <option value="crocodile">Crocodile Leather (+ $150)</option>
+                        <option value="fabric">Premium Fabric (+$20)</option>
+                        <option value="crocodile">Crocodile Leather (+$150)</option>
+                        <option value="alligator">Alligator (+$200)</option>
+                        <option value="suede">Premium Suede (+$60)</option>
                     </select>
                 </div>
-                <label style="color: #ffd700; font-size: 0.85em;">Strap Color:</label>
+                <label style="color: #ffd700; font-size: 0.85em; margin-top: 8px; display: block;">Colors:</label>
                 <div class="color-grid" id="strapColors"></div>
             </div>
 
             <!-- Presets -->
             <div class="control-group">
-                <h3>⚡ Quick Presets</h3>
+                <h3>⚡ Collections</h3>
                 <div class="preset-grid">
                     <button class="preset-btn" onclick="applyPreset('classic')">Classic</button>
                     <button class="preset-btn" onclick="applyPreset('sport')">Sport</button>
@@ -457,7 +647,7 @@
                 </div>
             </div>
 
-            <!-- Action Buttons -->
+            <!-- Actions -->
             <div class="control-group">
                 <div class="buttons-group">
                     <button class="btn btn-secondary" onclick="downloadDesign()">📥 Download</button>
@@ -466,17 +656,17 @@
             </div>
 
             <div class="info-box">
-                ℹ️ All prices include customization. Delivery in 7-10 business days.
+                ℹ️ Premium craftsmanship. 7-10 day delivery. Lifetime warranty.
             </div>
         </div>
 
-        <!-- Cart/Price Panel -->
+        <!-- Cart Panel -->
         <div class="cart-panel">
-            <h2>🛒 Order Summary</h2>
+            <h2>🛍️ Order</h2>
             
             <div class="cart-item">
                 <span class="cart-item-label">Dial:</span>
-                <span class="cart-item-value" id="cartDial">Black</span>
+                <span class="cart-item-value" id="cartDial">Matte Black</span>
             </div>
 
             <div class="cart-item">
@@ -486,7 +676,7 @@
 
             <div class="cart-item">
                 <span class="cart-item-label">Strap:</span>
-                <span class="cart-item-value" id="cartStrap">Steel Bracelet</span>
+                <span class="cart-item-value" id="cartStrap">Steel</span>
             </div>
 
             <div class="cart-item">
@@ -500,11 +690,11 @@
                     <span>$199.99</span>
                 </div>
                 <div class="price-row">
-                    <span>Customizations:</span>
+                    <span>Upgrades:</span>
                     <span id="customPrice">$0.00</span>
                 </div>
                 <div class="price-row total">
-                    <span>Total:</span>
+                    <span>TOTAL:</span>
                     <span id="totalPrice">$199.99</span>
                 </div>
             </div>
@@ -513,12 +703,17 @@
                 <button class="btn btn-primary" onclick="addToCart()">✓ Add to Cart</button>
             </div>
 
-            <button class="btn ar-btn" onclick="startAR()">📱 Try AR</button>
+            <button class="btn btn-ar" onclick="startAR()">📱 Try AR</button>
 
-            <div class="info-box" style="margin-top: 10px;">
-                💳 Secure checkout. Free shipping on orders over $500.
+            <div class="info-box">
+                ✈️ Free worldwide shipping | 💳 Secure payment
             </div>
         </div>
+    </div>
+
+    <div class="footer">
+        <p>© 2026 YASH Premium - <span class="footer-highlight">Crafted Luxury Timepieces</span></p>
+        <p>Every watch is handcrafted with precision and passion</p>
     </div>
 
     <script>
@@ -527,7 +722,7 @@
             dialColor: '#000000',
             frameColor: '#c0c0c0',
             strapColor: '#1a1a1a',
-            dialMaterial: 'black',
+            dialMaterial: 'matte-black',
             frameType: 'steel',
             strapType: 'steel',
             studs: 'none',
@@ -548,6 +743,7 @@
                 sapphire: 45,
                 ruby: 45,
                 emerald: 45,
+                topaz: 40,
                 none: 0
             },
             frameType: {
@@ -555,7 +751,8 @@
                 titanium: 30,
                 platinum: 200,
                 gold: 300,
-                rosegold: 80
+                rosegold: 80,
+                bronze: 25
             },
             strapType: {
                 steel: 0,
@@ -563,35 +760,74 @@
                 rubber: 0,
                 nato: 0,
                 fabric: 20,
-                crocodile: 150
+                crocodile: 150,
+                alligator: 200,
+                suede: 60
             }
         };
 
-        // Color Palettes
+        // Expanded Color Palettes
         const colors = {
             dial: [
-                { name: 'Black', hex: '#000000' },
-                { name: 'White', hex: '#ffffff' },
+                { name: 'Matte Black', hex: '#1a1a1a' },
+                { name: 'Glossy Black', hex: '#000000' },
+                { name: 'Charcoal', hex: '#36454f' },
                 { name: 'Navy', hex: '#000080' },
-                { name: 'Blue', hex: '#0066ff' },
+                { name: 'Deep Blue', hex: '#00008b' },
+                { name: 'Royal Blue', hex: '#4169e1' },
+                { name: 'Bright Blue', hex: '#0066ff' },
+                { name: 'Cyan', hex: '#00ffff' },
+                { name: 'White', hex: '#ffffff' },
+                { name: 'Cream', hex: '#fffdd0' },
                 { name: 'Silver', hex: '#c0c0c0' },
-                { name: 'Gold', hex: '#ffd700' }
+                { name: 'Gold', hex: '#ffd700' },
+                { name: 'Rose Gold', hex: '#b76e79' },
+                { name: 'Copper', hex: '#b87333' },
+                { name: 'Burgundy', hex: '#800020' },
+                { name: 'Deep Red', hex: '#8b0000' },
+                { name: 'Scarlet', hex: '#ff2400' },
+                { name: 'Orange', hex: '#ff8c00' },
+                { name: 'Bronze', hex: '#cd7f32' },
+                { name: 'Green', hex: '#008000' }
             ],
             frame: [
                 { name: 'Silver', hex: '#c0c0c0' },
+                { name: 'Brushed Silver', hex: '#a8a9ad' },
+                { name: 'Gunmetal', hex: '#2c3e50' },
                 { name: 'Gold', hex: '#ffd700' },
                 { name: 'Rose Gold', hex: '#b76e79' },
                 { name: 'Black', hex: '#1a1a1a' },
                 { name: 'Platinum', hex: '#e5e4e2' },
-                { name: 'Bronze', hex: '#cd7f32' }
+                { name: 'Bronze', hex: '#cd7f32' },
+                { name: 'Copper', hex: '#b87333' },
+                { name: 'Steel Blue', hex: '#4682b4' },
+                { name: 'Titanium Gray', hex: '#878681' },
+                { name: 'Carbon Black', hex: '#0a0a0a' },
+                { name: 'Pearl White', hex: '#fdeef4' },
+                { name: 'Champagne', hex: '#f7e7ce' },
+                { name: 'Antique Gold', hex: '#c68642' }
             ],
             strap: [
                 { name: 'Black', hex: '#1a1a1a' },
+                { name: 'Charcoal', hex: '#36454f' },
+                { name: 'Dark Gray', hex: '#404040' },
                 { name: 'Brown', hex: '#654321' },
                 { name: 'Tan', hex: '#ccaa88' },
+                { name: 'Camel', hex: '#c19a6b' },
+                { name: 'Navy', hex: '#000080' },
+                { name: 'Dark Blue', hex: '#003d99' },
+                { name: 'Royal Blue', hex: '#4169e1' },
                 { name: 'Red', hex: '#8b0000' },
+                { name: 'Burgundy', hex: '#800020' },
+                { name: 'Maroon', hex: '#800000' },
+                { name: 'Green', hex: '#2d5016' },
                 { name: 'Gray', hex: '#808080' },
-                { name: 'Navy', hex: '#000080' }
+                { name: 'White', hex: '#f5f5f5' },
+                { name: 'Beige', hex: '#d4a574' },
+                { name: 'Olive', hex: '#6b8e23' },
+                { name: 'Purple', hex: '#4b0082' },
+                { name: 'Pink', hex: '#c75c7d' },
+                { name: 'Orange', hex: '#cc5500' }
             ]
         };
 
@@ -601,16 +837,16 @@
                 dialColor: '#000000',
                 frameColor: '#c0c0c0',
                 strapColor: '#1a1a1a',
-                dialMaterial: 'black',
+                dialMaterial: 'matte-black',
                 frameType: 'steel',
                 strapType: 'steel',
                 studs: 'none'
             },
             sport: {
                 dialColor: '#0066ff',
-                frameColor: '#333333',
+                frameColor: '#878681',
                 strapColor: '#000000',
-                dialMaterial: 'blue',
+                dialMaterial: 'glossy-black',
                 frameType: 'titanium',
                 strapType: 'rubber',
                 studs: 'none'
@@ -640,8 +876,8 @@
 
         function resizeCanvas() {
             const container = canvas.parentElement;
-            canvas.width = Math.min(400, container.clientWidth - 40);
-            canvas.height = 450;
+            canvas.width = Math.min(450, container.clientWidth - 60);
+            canvas.height = 500;
         }
 
         // Draw 3D Watch
@@ -656,31 +892,35 @@
             ctx.translate(centerX, centerY);
             ctx.scale(watchState.zoomLevel, watchState.zoomLevel);
 
-            // Draw straps (longer and more visible)
-            drawStrap(ctx, -110, -120, 45, 240, watchState.strapColor, watchState.strapType);
-            drawStrap(ctx, 65, -120, 45, 240, watchState.strapColor, watchState.strapType);
+            // Draw straps (extended)
+            drawStrap(ctx, -130, -130, 50, 260, watchState.strapColor, watchState.strapType);
+            drawStrap(ctx, 80, -130, 50, 260, watchState.strapColor, watchState.strapType);
 
-            // Draw watch case
-            ctx.fillStyle = watchState.frameColor;
-            ctx.shadowColor = 'rgba(212, 175, 55, 0.3)';
-            ctx.shadowBlur = 20;
+            // Draw watch case with gradient
+            const gradient = ctx.createRadialGradient(-20, -20, 20, 0, 0, 110);
+            gradient.addColorStop(0, 'rgba(255, 255, 255, 0.2)');
+            gradient.addColorStop(0.7, watchState.frameColor);
+            gradient.addColorStop(1, 'rgba(0, 0, 0, 0.3)');
+            ctx.fillStyle = gradient;
+            ctx.shadowColor = 'rgba(212, 175, 55, 0.4)';
+            ctx.shadowBlur = 25;
             ctx.beginPath();
-            ctx.arc(0, 0, 100, 0, Math.PI * 2);
+            ctx.arc(0, 0, 110, 0, Math.PI * 2);
             ctx.fill();
             ctx.shadowColor = 'transparent';
 
             // Draw bezel
             ctx.strokeStyle = '#333';
-            ctx.lineWidth = 3;
+            ctx.lineWidth = 4;
             ctx.stroke();
 
             // Draw dial
             ctx.fillStyle = watchState.dialColor;
             ctx.beginPath();
-            ctx.arc(0, 0, 88, 0, Math.PI * 2);
+            ctx.arc(0, 0, 98, 0, Math.PI * 2);
             ctx.fill();
 
-            // Draw studs if selected
+            // Draw studs
             if (watchState.studs !== 'none') {
                 drawStuds(ctx, watchState.studs);
             }
@@ -688,53 +928,50 @@
             // Draw hour markers
             for (let i = 0; i < 12; i++) {
                 const angle = (i / 12) * Math.PI * 2 - Math.PI / 2;
-                const x = Math.cos(angle) * 70;
-                const y = Math.sin(angle) * 70;
+                const x = Math.cos(angle) * 78;
+                const y = Math.sin(angle) * 78;
                 ctx.fillStyle = '#fff';
                 if (i % 3 === 0) {
-                    ctx.fillRect(x - 3, y - 10, 6, 20);
+                    ctx.fillRect(x - 4, y - 12, 8, 24);
                 } else {
-                    ctx.fillRect(x - 1.5, y - 7, 3, 14);
+                    ctx.fillRect(x - 2, y - 8, 4, 16);
                 }
             }
 
-            // Draw clock hands
+            // Clock hands
             const now = new Date();
             const hours = now.getHours() % 12;
             const minutes = now.getMinutes();
             const seconds = now.getSeconds();
 
-            // Hour hand
             const hourAngle = ((hours + minutes / 60) / 12) * Math.PI * 2 - Math.PI / 2;
             ctx.strokeStyle = isLight(watchState.dialColor) ? '#000' : '#fff';
-            ctx.lineWidth = 5;
+            ctx.lineWidth = 6;
             ctx.lineCap = 'round';
             ctx.beginPath();
             ctx.moveTo(0, 0);
-            ctx.lineTo(Math.cos(hourAngle) * 40, Math.sin(hourAngle) * 40);
+            ctx.lineTo(Math.cos(hourAngle) * 45, Math.sin(hourAngle) * 45);
             ctx.stroke();
 
-            // Minute hand
             const minuteAngle = (minutes / 60) * Math.PI * 2 - Math.PI / 2;
-            ctx.lineWidth = 4;
+            ctx.lineWidth = 5;
             ctx.beginPath();
             ctx.moveTo(0, 0);
-            ctx.lineTo(Math.cos(minuteAngle) * 60, Math.sin(minuteAngle) * 60);
+            ctx.lineTo(Math.cos(minuteAngle) * 68, Math.sin(minuteAngle) * 68);
             ctx.stroke();
 
-            // Second hand
             const secondAngle = (seconds / 60) * Math.PI * 2 - Math.PI / 2;
             ctx.strokeStyle = '#ff6b6b';
             ctx.lineWidth = 2;
             ctx.beginPath();
             ctx.moveTo(0, 0);
-            ctx.lineTo(Math.cos(secondAngle) * 70, Math.sin(secondAngle) * 70);
+            ctx.lineTo(Math.cos(secondAngle) * 78, Math.sin(secondAngle) * 78);
             ctx.stroke();
 
             // Center dot
             ctx.fillStyle = '#fff';
             ctx.beginPath();
-            ctx.arc(0, 0, 6, 0, Math.PI * 2);
+            ctx.arc(0, 0, 8, 0, Math.PI * 2);
             ctx.fill();
 
             ctx.restore();
@@ -742,20 +979,21 @@
 
         // Draw Studs
         function drawStuds(ctx, type) {
-            const colors = {
+            const studsColors = {
                 diamond: '#e8f4f8',
                 sapphire: '#0f52ba',
                 ruby: '#e0115f',
-                emerald: '#50c878'
+                emerald: '#50c878',
+                topaz: '#ffd700'
             };
 
-            ctx.fillStyle = colors[type];
+            ctx.fillStyle = studsColors[type];
             for (let i = 0; i < 12; i++) {
                 const angle = (i / 12) * Math.PI * 2;
-                const x = Math.cos(angle) * 75;
-                const y = Math.sin(angle) * 75;
+                const x = Math.cos(angle) * 85;
+                const y = Math.sin(angle) * 85;
                 ctx.beginPath();
-                ctx.arc(x, y, 4, 0, Math.PI * 2);
+                ctx.arc(x, y, 5, 0, Math.PI * 2);
                 ctx.fill();
                 ctx.strokeStyle = '#333';
                 ctx.lineWidth = 1;
@@ -767,21 +1005,21 @@
         function drawStrap(ctx, x, y, width, height, color, type) {
             ctx.fillStyle = color;
             ctx.beginPath();
-            ctx.roundRect(x, y, width, height, 20);
+            ctx.roundRect(x, y, width, height, 22);
             ctx.fill();
 
             if (type === 'leather') {
                 ctx.strokeStyle = 'rgba(0,0,0,0.3)';
                 ctx.lineWidth = 1;
-                for (let i = 0; i < height; i += 15) {
+                for (let i = 0; i < height; i += 18) {
                     ctx.beginPath();
-                    ctx.arc(x + width / 2, y + i, 2, 0, Math.PI * 2);
+                    ctx.arc(x + width / 2, y + i, 2.5, 0, Math.PI * 2);
                     ctx.stroke();
                 }
             }
 
             ctx.strokeStyle = '#333';
-            ctx.lineWidth = 1;
+            ctx.lineWidth = 2;
             ctx.stroke();
         }
 
@@ -800,7 +1038,7 @@
                 const btn = document.createElement('button');
                 btn.className = 'color-btn';
                 btn.style.backgroundColor = color.hex;
-                btn.textContent = color.name.substring(0, 1);
+                btn.title = color.name;
                 btn.onclick = () => {
                     watchState.dialColor = color.hex;
                     updateWatch();
@@ -813,7 +1051,7 @@
                 const btn = document.createElement('button');
                 btn.className = 'color-btn';
                 btn.style.backgroundColor = color.hex;
-                btn.textContent = color.name.substring(0, 1);
+                btn.title = color.name;
                 btn.onclick = () => {
                     watchState.frameColor = color.hex;
                     updateWatch();
@@ -826,7 +1064,7 @@
                 const btn = document.createElement('button');
                 btn.className = 'color-btn';
                 btn.style.backgroundColor = color.hex;
-                btn.textContent = color.name.substring(0, 1);
+                btn.title = color.name;
                 btn.onclick = () => {
                     watchState.strapColor = color.hex;
                     updateWatch();
@@ -853,10 +1091,10 @@
 
         // Update Cart Summary
         function updateCartSummary() {
-            document.getElementById('cartDial').textContent = document.getElementById('dialMaterial').value.charAt(0).toUpperCase() + document.getElementById('dialMaterial').value.slice(1);
-            document.getElementById('cartFrame').textContent = document.getElementById('frameType').value.charAt(0).toUpperCase() + document.getElementById('frameType').value.slice(1);
-            document.getElementById('cartStrap').textContent = document.getElementById('strapType').value.replace(/([A-Z])/g, ' $1').trim();
-            document.getElementById('cartStuds').textContent = document.getElementById('studs').value.charAt(0).toUpperCase() + document.getElementById('studs').value.slice(1);
+            document.getElementById('cartDial').textContent = document.getElementById('dialMaterial').value.replace(/-/g, ' ').toUpperCase();
+            document.getElementById('cartFrame').textContent = document.getElementById('frameType').value.replace(/-/g, ' ').toUpperCase();
+            document.getElementById('cartStrap').textContent = document.getElementById('strapType').value.replace(/-/g, ' ').toUpperCase();
+            document.getElementById('cartStuds').textContent = document.getElementById('studs').value === 'none' ? 'None' : document.getElementById('studs').value.toUpperCase();
         }
 
         // Update Price
@@ -885,7 +1123,7 @@
 
         // Add to Cart
         function addToCart() {
-            alert('✓ Added to cart! 🛒\n\nTotal: $' + document.getElementById('totalPrice').textContent);
+            alert('✓ Added to cart!\n\nTotal: ' + document.getElementById('totalPrice').textContent + '\n\nProceeding to checkout...');
         }
 
         // Download Design
@@ -899,14 +1137,11 @@
         // Reset Watch
         function resetWatch() {
             applyPreset('classic');
-            watchState.rotationX = 0.3;
-            watchState.rotationY = 0.2;
-            watchState.zoomLevel = 1;
         }
 
         // AR Feature
         function startAR() {
-            alert('📱 AR Try-On\n\nThis feature requires camera access.\n\nPlease use your phone to test the AR feature with proper device support.\n\nComing in next update with full AR integration!');
+            alert('📱 AR Try-On Coming Soon!\n\nThis feature will allow you to see your custom watch on your wrist using your device camera.');
         }
 
         // Mouse Controls
