@@ -60,62 +60,132 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 300px;
+            min-height: 400px;
+            perspective: 1000px;
         }
 
-        .watch {
+        .watch-container {
+            position: relative;
+            width: 280px;
+            height: 320px;
+        }
+
+        /* Left Strap */
+        .strap-left {
+            position: absolute;
+            width: 50px;
+            height: 200px;
+            border-radius: 25px;
+            left: -60px;
+            top: 60px;
+            box-shadow: -5px 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        /* Right Strap */
+        .strap-right {
+            position: absolute;
+            width: 50px;
+            height: 200px;
+            border-radius: 25px;
+            right: -60px;
+            top: 60px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        /* Watch Case */
+        .watch-case {
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            top: 50px;
+            left: 30px;
+            box-shadow: 
+                inset -5px -5px 15px rgba(0, 0, 0, 0.3),
+                0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 2;
+            border: 8px solid;
+        }
+
+        /* Watch Dial */
+        .watch-dial {
+            position: absolute;
             width: 200px;
             height: 200px;
             border-radius: 50%;
-            border: 8px solid;
-            position: relative;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            top: 10px;
+            left: 10px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 24px;
-            font-weight: bold;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2);
+            z-index: 3;
         }
 
+        /* Hour Markers */
+        .markers {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        .marker {
+            position: absolute;
+            width: 3px;
+            height: 12px;
+            background: white;
+            left: 50%;
+            top: 10px;
+            margin-left: -1.5px;
+            transform-origin: 50% 90px;
+        }
+
+        /* Watch Hands */
         .watch-hand {
             position: absolute;
             background: white;
             transform-origin: bottom center;
             left: 50%;
+            bottom: 50%;
         }
 
         .hour-hand {
             width: 4px;
             height: 50px;
             margin-left: -2px;
-            top: 50px;
+            background: white;
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
         }
 
         .minute-hand {
             width: 3px;
             height: 70px;
             margin-left: -1.5px;
-            top: 30px;
+            background: white;
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
         }
 
         .second-hand {
             width: 2px;
             height: 80px;
             margin-left: -1px;
-            top: 20px;
             background: #ff6b6b;
         }
 
         .center-dot {
-            width: 12px;
-            height: 12px;
+            position: absolute;
+            width: 10px;
+            height: 10px;
             background: white;
             border-radius: 50%;
-            position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 10;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
         /* Controls */
@@ -154,7 +224,7 @@
             font-weight: bold;
             color: white;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-            font-size: 0.9em;
+            font-size: 0.85em;
         }
 
         .color-btn:hover {
@@ -255,11 +325,28 @@
         <div class="content">
             <!-- Watch Display -->
             <div class="watch-display">
-                <div class="watch" id="watchDisplay">
-                    <div class="watch-hand hour-hand" id="hourHand"></div>
-                    <div class="watch-hand minute-hand" id="minuteHand"></div>
-                    <div class="watch-hand second-hand" id="secondHand"></div>
-                    <div class="center-dot"></div>
+                <div class="watch-container">
+                    <!-- Left Strap -->
+                    <div class="strap-left" id="strapLeft"></div>
+                    
+                    <!-- Right Strap -->
+                    <div class="strap-right" id="strapRight"></div>
+
+                    <!-- Watch Case -->
+                    <div class="watch-case" id="watchCase">
+                        <!-- Watch Dial -->
+                        <div class="watch-dial" id="watchDial">
+                            <div class="markers" id="markers"></div>
+                            
+                            <!-- Clock Hands -->
+                            <div class="watch-hand hour-hand" id="hourHand"></div>
+                            <div class="watch-hand minute-hand" id="minuteHand"></div>
+                            <div class="watch-hand second-hand" id="secondHand"></div>
+                            
+                            <!-- Center Dot -->
+                            <div class="center-dot"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -304,7 +391,7 @@
 
                 <!-- Info -->
                 <div class="info-box">
-                    ℹ️ Click colors to customize your watch. Use presets for quick designs!
+                    ℹ️ Click colors to customize your watch. Straps appear on both sides!
                 </div>
             </div>
         </div>
@@ -397,18 +484,20 @@
 
         // Update Watch Display
         function updateWatch() {
-            const watch = document.getElementById('watchDisplay');
-            watch.style.backgroundColor = watchState.dialColor;
-            watch.style.borderColor = watchState.frameColor;
-            
+            const watchDial = document.getElementById('watchDial');
+            const watchCase = document.getElementById('watchCase');
+            const strapLeft = document.getElementById('strapLeft');
+            const strapRight = document.getElementById('strapRight');
+
+            watchDial.style.backgroundColor = watchState.dialColor;
+            watchCase.style.borderColor = watchState.frameColor;
+            strapLeft.style.backgroundColor = watchState.strapColor;
+            strapRight.style.backgroundColor = watchState.strapColor;
+
             // Update hand colors based on dial color
-            const hands = document.querySelectorAll('.watch-hand');
             const isLightDial = isLight(watchState.dialColor);
-            hands.forEach(hand => {
-                if (hand.id !== 'secondHand') {
-                    hand.style.backgroundColor = isLightDial ? '#000000' : '#ffffff';
-                }
-            });
+            document.getElementById('hourHand').style.backgroundColor = isLightDial ? '#000000' : '#ffffff';
+            document.getElementById('minuteHand').style.backgroundColor = isLightDial ? '#000000' : '#ffffff';
         }
 
         // Check if color is light
@@ -417,6 +506,17 @@
             const g = parseInt(hex.substr(3, 2), 16);
             const b = parseInt(hex.substr(5, 2), 16);
             return (r * 299 + g * 587 + b * 114) / 1000 > 128;
+        }
+
+        // Create Hour Markers
+        function createMarkers() {
+            const markersContainer = document.getElementById('markers');
+            for (let i = 0; i < 12; i++) {
+                const marker = document.createElement('div');
+                marker.className = 'marker';
+                marker.style.transform = `rotate(${i * 30}deg)`;
+                markersContainer.appendChild(marker);
+            }
         }
 
         // Update Active Buttons
@@ -460,31 +560,48 @@
 
         // Download Watch
         function downloadWatch() {
-            const watch = document.getElementById('watchDisplay');
             const canvas = document.createElement('canvas');
-            canvas.width = 200;
-            canvas.height = 200;
+            canvas.width = 300;
+            canvas.height = 350;
             const ctx = canvas.getContext('2d');
 
             // Draw background
-            ctx.fillStyle = watchState.dialColor;
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw left strap
+            ctx.fillStyle = watchState.strapColor;
             ctx.beginPath();
-            ctx.arc(100, 100, 100, 0, Math.PI * 2);
+            ctx.roundRect(20, 75, 40, 150, 20);
             ctx.fill();
 
-            // Draw border
+            // Draw right strap
+            ctx.fillStyle = watchState.strapColor;
+            ctx.beginPath();
+            ctx.roundRect(240, 75, 40, 150, 20);
+            ctx.fill();
+
+            // Draw frame
             ctx.strokeStyle = watchState.frameColor;
             ctx.lineWidth = 8;
+            ctx.beginPath();
+            ctx.arc(150, 125, 100, 0, Math.PI * 2);
             ctx.stroke();
+
+            // Draw dial
+            ctx.fillStyle = watchState.dialColor;
+            ctx.beginPath();
+            ctx.arc(150, 125, 92, 0, Math.PI * 2);
+            ctx.fill();
 
             // Draw time
             ctx.fillStyle = isLight(watchState.dialColor) ? '#000000' : '#ffffff';
-            ctx.font = 'bold 30px Arial';
+            ctx.font = 'bold 28px Arial';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             const now = new Date();
             const timeStr = now.toLocaleTimeString();
-            ctx.fillText(timeStr.substring(0, 5), 100, 100);
+            ctx.fillText(timeStr.substring(0, 5), 150, 125);
 
             // Download
             const link = document.createElement('a');
@@ -513,6 +630,7 @@
 
         // Initialize
         window.addEventListener('DOMContentLoaded', () => {
+            createMarkers();
             initializeColorPickers();
             updateWatch();
             updateActiveButtons();
